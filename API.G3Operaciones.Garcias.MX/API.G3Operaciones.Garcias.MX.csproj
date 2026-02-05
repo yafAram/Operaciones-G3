@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\Auth\DTOs\" />
+    <Folder Include="Application\Auth\Interfaces\" />
+    <Folder Include="Application\Auth\Services\" />
+    <Folder Include="Application\Common\Interfaces\" />
+    <Folder Include="Application\Common\Exceptions\" />
+    <Folder Include="Application\Common\Mappings\" />
+    <Folder Include="Application\Inventory\DTOs\" />
+    <Folder Include="Application\Inventory\Interfaces\" />
+    <Folder Include="Application\Inventory\Services\" />
+    <Folder Include="Application\Orders\DTOs\" />
+    <Folder Include="Application\Orders\Interfaces\" />
+    <Folder Include="Application\Orders\Services\" />
+    <Folder Include="Application\Products\DTOs\" />
+    <Folder Include="Application\Products\Interfaces\" />
+    <Folder Include="Application\Products\Services\" />
+    <Folder Include="Application\Reports\DTOs\" />
+    <Folder Include="Application\Reports\Interfaces\" />
+    <Folder Include="Application\Reports\Services\" />
+    <Folder Include="Application\Routes\DTOs\" />
+    <Folder Include="Application\Routes\Interfaces\" />
+    <Folder Include="Application\Routes\Services\" />
+    <Folder Include="Application\Users\DTOs\" />
+    <Folder Include="Application\Users\Interfaces\" />
+    <Folder Include="Application\Users\Services\" />
+    <Folder Include="Domain\Common\" />
+    <Folder Include="Domain\Inventory\" />
+    <Folder Include="Domain\Incidents\" />
+    <Folder Include="Domain\Routes\" />
+    <Folder Include="Domain\Orders\" />
+    <Folder Include="Domain\Products\" />
+    <Folder Include="Domain\Users\" />
+    <Folder Include="Infrastructure\Services\" />
+    <Folder Include="Infrastructure\Repositories\" />
+    <Folder Include="Infrastructure\Persistence\Configurations\" />
+    <Folder Include="Middlewares\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Configurations\" />
+  </ItemGroup>
+
+</Project>

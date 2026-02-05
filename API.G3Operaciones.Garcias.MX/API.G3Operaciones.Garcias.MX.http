@@ -1,0 +1,6 @@
+@API.G3Operaciones.Garcias.MX_HostAddress = http://localhost:5276
+
+GET {{API.G3Operaciones.Garcias.MX_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
