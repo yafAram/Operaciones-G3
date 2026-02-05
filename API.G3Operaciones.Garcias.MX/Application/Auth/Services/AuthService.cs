@@ -1,0 +1,72 @@
+﻿using API.G3Operaciones.Garcias.MX.Application.Auth.DTOs;
+using API.G3Operaciones.Garcias.MX.Application.Auth.Interfaces;
+using API.G3Operaciones.Garcias.MX.Domain.Entities;
+using API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities;
+using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace API.G3Operaciones.Garcias.MX.Application.Auth.Services
+{
+    public class AuthService : IAuthService
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly IPasswordHasher _passwordHasher;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+
+        public AuthService(
+            ApplicationDbContext context,
+            IPasswordHasher passwordHasher,
+            IJwtTokenGenerator jwtTokenGenerator)
+        {
+            _context = context;
+            _passwordHasher = passwordHasher;
+            _jwtTokenGenerator = jwtTokenGenerator;
+        }
+
+        public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto request)
+        {
+            var credential = await _context.Set<UserCredential>()
+                .Include(x => x.User)
+                    .ThenInclude(u => u.Role)
+                .FirstOrDefaultAsync(x => x.Username == request.Username);
+
+            if (credential == null || credential.IsLocked)
+                return null; // Usuario no encontrado o bloqueado
+
+            var isValidPassword = _passwordHasher.Verify(request.Password, credential.PasswordHash);
+
+            if (!isValidPassword)
+                return null; // Contraseña inválida
+
+            var token = _jwtTokenGenerator.GenerateToken(credential.User, credential.MustChangePassword);
+
+            return new LoginResponseDto
+            {
+                Token = token,
+                MustChangePassword = credential.MustChangePassword
+            };
+        }
+
+
+
+        public async Task ChangePasswordAsync(Guid userId, ChangePasswordDto dto)
+        {
+            var credential = await _context.Set<UserCredential>()
+                .FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (credential == null)
+                throw new Exception("Credenciales no encontradas");
+
+            if (!_passwordHasher.Verify(dto.CurrentPassword, credential.PasswordHash))
+                throw new UnauthorizedAccessException("Contraseña actual incorrecta");
+
+            var newHash = _passwordHasher.Hash(dto.NewPassword);
+
+            credential.UpdatePassword(newHash);
+
+            await _context.SaveChangesAsync();
+        }
+
+    }
+}

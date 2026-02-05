@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.AuthController",
+    "Method": "ChangePassword",
+    "RelativePath": "api/auth/change-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Auth.DTOs.ChangePasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Auth.DTOs.LoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.HealthController",
     "Method": "CheckDatabase",
     "RelativePath": "api/health/db",
@@ -7,6 +39,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.UsersController",
+    "Method": "CreateUser",
+    "RelativePath": "api/users",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Users.DTOs.CreateUserDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

@@ -39,7 +39,7 @@
       "API.G3Operaciones.Garcias.MX/1.0.0": {
         "dependencies": {
           "AutoMapper": "16.0.0",
-          "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "BCrypt.Net-Next": "4.0.3",
           "FluentAssertions": "8.8.0",
           "FluentValidation": "12.1.1",
           "FluentValidation.AspNetCore": "11.3.1",
@@ -395,20 +395,6 @@
           "lib/net10.0/AutoMapper.dll": {}
         }
       },
-      "AutoMapper.Extensions.Microsoft.DependencyInjection/12.0.1": {
-        "dependencies": {
-          "AutoMapper": "16.0.0"
-        },
-        "runtime": {
-          "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {
-            "assemblyVersion": "12.0.0.0",
-            "fileVersion": "12.0.1.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
-        }
-      },
       "Azure.Core/1.47.1": {
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
@@ -439,6 +425,17 @@
         },
         "compile": {
           "lib/net8.0/Azure.Identity.dll": {}
+        }
+      },
+      "BCrypt.Net-Next/4.0.3": {
+        "runtime": {
+          "lib/net6.0/BCrypt.Net-Next.dll": {
+            "assemblyVersion": "4.0.3.0",
+            "fileVersion": "4.0.3.0"
+          }
+        },
+        "compile": {
+          "lib/net6.0/BCrypt.Net-Next.dll": {}
         }
       },
       "Castle.Core/5.1.1": {
@@ -3666,13 +3663,6 @@
       "path": "automapper/16.0.0",
       "hashPath": "automapper.16.0.0.nupkg.sha512"
     },
-    "AutoMapper.Extensions.Microsoft.DependencyInjection/12.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-+g/K+Vpe3gGMKGzjslMOdqNlkikScDjWfVvmWTayrDHaG/n2pPmFBMa+jKX1r/h6BDGFdkyRjAuhFE3ykW+r1g==",
-      "path": "automapper.extensions.microsoft.dependencyinjection/12.0.1",
-      "hashPath": "automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512"
-    },
     "Azure.Core/1.47.1": {
       "type": "package",
       "serviceable": true,
@@ -3686,6 +3676,13 @@
       "sha512": "sha512-YhNMwOTwT+I2wIcJKSdP0ADyB2aK+JaYWZxO8LSRDm5w77LFr0ykR9xmt2ZV5T1gaI7xU6iNFIh/yW1dAlpddQ==",
       "path": "azure.identity/1.14.2",
       "hashPath": "azure.identity.1.14.2.nupkg.sha512"
+    },
+    "BCrypt.Net-Next/4.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
+      "path": "bcrypt.net-next/4.0.3",
+      "hashPath": "bcrypt.net-next.4.0.3.nupkg.sha512"
     },
     "Castle.Core/5.1.1": {
       "type": "package",

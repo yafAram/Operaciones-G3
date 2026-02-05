@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using API.G3Operaciones.Garcias.MX.Domain.Entities;
+using API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities;
+using API.G3Operaciones.Garcias.MX.Domain.Entities.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence
 {
@@ -9,15 +12,17 @@ namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence
         {
         }
 
-        // DbSets se agregarán después
-        // public DbSet<User> Users { get; set; }
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Role> Roles => Set<Role>();
+        public DbSet<UserCredential> UserCredentials => Set<UserCredential>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configuraciones por Fluent API irán aquí
-            // modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                typeof(ApplicationDbContext).Assembly);
         }
     }
+
 }
