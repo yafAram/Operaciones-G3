@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using API.G3Operaciones.Garcias.MX.Application.Common.Dto;
+using API.G3Operaciones.Garcias.MX.Application.Common.Exceptions;
+using System.Net;
 
 namespace API.G3Operaciones.Garcias.MX.Middlewares
 {
@@ -17,15 +19,26 @@ namespace API.G3Operaciones.Garcias.MX.Middlewares
             {
                 await _next(context);
             }
+            catch (ValidationException ex)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                await context.Response.WriteAsJsonAsync(
+                    ApiResponseDto.Fail(ex.Message)
+                );
+            }
             catch (UnauthorizedAccessException ex)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+                await context.Response.WriteAsJsonAsync(
+                    ApiResponseDto.Fail(ex.Message)
+                );
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                context.Response.StatusCode = 500;
-                await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await context.Response.WriteAsJsonAsync(
+                    ApiResponseDto.Fail("Ocurrió un error interno")
+                );
             }
         }
     }

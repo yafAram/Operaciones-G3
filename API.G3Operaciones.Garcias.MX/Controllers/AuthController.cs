@@ -40,13 +40,15 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
         [HttpPost("change-password")]
         public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
         {
-            var userId = Guid.Parse(
-                User.FindFirstValue(ClaimTypes.NameIdentifier)!
-            );
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-            await _authService.ChangePasswordAsync(userId, dto);
+            var result = await _authService.ChangePasswordAsync(userId, dto);
 
-            return NoContent();
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
+
     }
 }

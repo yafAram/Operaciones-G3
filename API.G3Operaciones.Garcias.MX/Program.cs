@@ -1,10 +1,13 @@
 ﻿using API.G3Operaciones.Garcias.MX.Application.Auth.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Auth.Services;
+using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Users.Services;
 using API.G3Operaciones.Garcias.MX.Infrastructure;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence.Configurations;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Services;
 using API.G3Operaciones.Garcias.MX.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -33,6 +36,18 @@ builder.Services.Configure<JwtSettings>(
 );
 
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        return new BadRequestObjectResult(new
+        {
+            error = "Datos de inicio de sesión inválidos"
+        });
+    };
+});
 
 // Authentication
 builder.Services.AddAuthentication("Bearer")

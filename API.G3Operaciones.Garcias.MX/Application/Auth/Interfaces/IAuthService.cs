@@ -5,7 +5,7 @@ namespace API.G3Operaciones.Garcias.MX.Application.Auth.Interfaces
     public interface IAuthService
     {
         Task<LoginResponseDto> LoginAsync(LoginRequestDto request);
-        Task ChangePasswordAsync(Guid userId, ChangePasswordDto dto);
+        Task<ChangePasswordResultDto> ChangePasswordAsync(Guid userId, ChangePasswordDto dto);
 
     }
 }

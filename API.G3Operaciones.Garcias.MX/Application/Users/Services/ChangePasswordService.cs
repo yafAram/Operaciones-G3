@@ -1,11 +1,11 @@
 ﻿using API.G3Operaciones.Garcias.MX.Application.Auth.DTOs;
-using API.G3Operaciones.Garcias.MX.Application.Auth.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
 using API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.G3Operaciones.Garcias.MX.Application.Auth.Services
+namespace API.G3Operaciones.Garcias.MX.Application.Users.Services
 {
     public class ChangePasswordService
     {

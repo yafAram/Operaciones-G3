@@ -47,10 +47,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Auth\DTOs\" />
     <Folder Include="Application\Auth\Services\" />
     <Folder Include="Application\Common\Interfaces\" />
-    <Folder Include="Application\Common\Exceptions\" />
     <Folder Include="Application\Common\Mappings\" />
     <Folder Include="Application\Inventory\DTOs\" />
     <Folder Include="Application\Inventory\Interfaces\" />
@@ -67,16 +65,14 @@
     <Folder Include="Application\Routes\DTOs\" />
     <Folder Include="Application\Routes\Interfaces\" />
     <Folder Include="Application\Routes\Services\" />
-    <Folder Include="Application\Users\Interfaces\" />
-    <Folder Include="Application\Users\Services\" />
     <Folder Include="Domain\Common\" />
     <Folder Include="Domain\Entities\Inventory\" />
     <Folder Include="Domain\Entities\Incidents\" />
     <Folder Include="Domain\Entities\Routes\" />
     <Folder Include="Domain\Entities\Orders\" />
     <Folder Include="Domain\Entities\Products\" />
+    <Folder Include="Filters\Auth\" />
     <Folder Include="Infrastructure\Repositories\" />
-    <Folder Include="Filters\" />
     <Folder Include="Configurations\" />
     <Folder Include="Migrations\" />
   </ItemGroup>

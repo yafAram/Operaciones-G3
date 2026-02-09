@@ -1,13 +1,16 @@
-﻿using API.G3Operaciones.Garcias.MX.Application.Auth.Interfaces;
+﻿using API.G3Operaciones.Garcias.MX.Application.Common.Validation;
 using API.G3Operaciones.Garcias.MX.Application.Users.DTOs;
+using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
 using API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Enums;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Users;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
-namespace API.G3Operaciones.Garcias.MX.Application.Auth.Services
+namespace API.G3Operaciones.Garcias.MX.Application.Users.Services
 {
     public class UserRegistrationService : IUserRegistrationService
     {
@@ -22,21 +25,33 @@ namespace API.G3Operaciones.Garcias.MX.Application.Auth.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task RegisterUserAsync(CreateUserDto dto)
+        public async Task<(bool Success, string? Error)> RegisterUserAsync(CreateUserDto dto)
         {
             var role = await _context.Set<Role>()
                 .FirstOrDefaultAsync(r => r.Id == dto.RoleId && r.Status == RoleStatus.Active);
 
             if (role == null)
-                throw new Exception("Rol inválido");
+                return (false, "Rol inválido");
 
             var exists = await _context.Set<UserCredential>()
                 .AnyAsync(x => x.Username == dto.Username);
 
-            if (exists)
-                throw new Exception("El nombre de usuario ya existe");
+            if (!UsernameValidator.IsValid(dto.FullName))
+                throw new ValidationException(
+                    "Formato Incorrecto"
+                );
 
-            // Reemplaza la creación del usuario para separar el nombre completo en nombre y apellido
+            if (!UsernameValidator.IsValid(dto.Username))
+                throw new ValidationException(
+                    "Formato Incorrecto"
+                );
+
+            if (exists)
+                return (false, "El nombre de usuario ya existe");
+
+
+
+
             var names = dto.FullName.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
             var firstName = names.Length > 0 ? names[0] : string.Empty;
             var lastName = names.Length > 1 ? names[1] : string.Empty;
@@ -49,11 +64,10 @@ namespace API.G3Operaciones.Garcias.MX.Application.Auth.Services
                 role.Id
             );
 
-
             _context.Add(user);
             await _context.SaveChangesAsync();
 
-            var temporaryPassword = GenerateTemporaryPassword();
+            var temporaryPassword = dto.Username;
 
             var credential = new UserCredential(
                 user.Id,
@@ -61,18 +75,12 @@ namespace API.G3Operaciones.Garcias.MX.Application.Auth.Services
                 _passwordHasher.Hash(temporaryPassword)
             );
 
-
             _context.Add(credential);
             await _context.SaveChangesAsync();
 
-            // IMPORTANTE:
-            // La contraseña temporal se devuelve SOLO al admin
-            // El frontend decidirá cómo mostrarla o entregarla
+            return (true, null);
         }
 
-        private static string GenerateTemporaryPassword()
-        {
-            return $"Tmp-{Guid.NewGuid():N}".Substring(0, 12);
-        }
+
     }
 }

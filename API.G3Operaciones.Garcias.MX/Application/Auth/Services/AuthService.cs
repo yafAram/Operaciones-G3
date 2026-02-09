@@ -1,5 +1,7 @@
 ﻿using API.G3Operaciones.Garcias.MX.Application.Auth.DTOs;
 using API.G3Operaciones.Garcias.MX.Application.Auth.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Common.Validation;
+using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
 using API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
@@ -50,23 +52,54 @@ namespace API.G3Operaciones.Garcias.MX.Application.Auth.Services
 
 
 
-        public async Task ChangePasswordAsync(Guid userId, ChangePasswordDto dto)
+        public async Task<ChangePasswordResultDto> ChangePasswordAsync(Guid userId, ChangePasswordDto dto)
         {
             var credential = await _context.Set<UserCredential>()
                 .FirstOrDefaultAsync(x => x.UserId == userId);
 
             if (credential == null)
-                throw new Exception("Credenciales no encontradas");
+            {
+                return new ChangePasswordResultDto
+                {
+                    Success = false,
+                    Message = "Credenciales no encontradas"
+                };
+            }
 
             if (!_passwordHasher.Verify(dto.CurrentPassword, credential.PasswordHash))
-                throw new UnauthorizedAccessException("Contraseña actual incorrecta");
+            {
+                return new ChangePasswordResultDto
+                {
+                    Success = false,
+                    Message = "La contraseña actual es incorrecta"
+                };
+            }
+
+            if (!PasswordValidator.IsValid(dto.NewPassword))
+            {
+                return new ChangePasswordResultDto
+                {
+                    Success = false,
+                    Message =
+                        "La nueva contraseña debe tener entre 8 y 32 caracteres, " +
+                        "al menos una mayúscula, un número y un símbolo"
+                };
+            }
 
             var newHash = _passwordHasher.Hash(dto.NewPassword);
 
             credential.UpdatePassword(newHash);
 
             await _context.SaveChangesAsync();
+
+            return new ChangePasswordResultDto
+            {
+                Success = true,
+                Message = "Contraseña actualizada correctamente"
+            };
         }
+
+
 
     }
 }
