@@ -15,6 +15,7 @@ namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence
         public DbSet<User> Users => Set<User>();
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<UserCredential> UserCredentials => Set<UserCredential>();
+        public DbSet<AuditLog> AuditLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

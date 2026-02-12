@@ -37,6 +37,14 @@ namespace API.G3Operaciones.Garcias.MX.Domain.Entities
                 PasswordHash = newHash;
                 MustChangePassword = false;
             }
+
+
+            public void ForcePasswordReset(string temporaryPasswordHash)
+            {
+                PasswordHash = temporaryPasswordHash;
+                MustChangePassword = true;
+                IsLocked = false;
+            }
         }
 
     }

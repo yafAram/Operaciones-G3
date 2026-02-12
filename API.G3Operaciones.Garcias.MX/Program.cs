@@ -1,10 +1,13 @@
 ﻿using API.G3Operaciones.Garcias.MX.Application.Auth.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Auth.Services;
+using API.G3Operaciones.Garcias.MX.Application.Common.Mappings;
+using API.G3Operaciones.Garcias.MX.Application.Common.Security;
 using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Users.Services;
 using API.G3Operaciones.Garcias.MX.Infrastructure;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence.Configurations;
+using API.G3Operaciones.Garcias.MX.Infrastructure.Security;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Services;
 using API.G3Operaciones.Garcias.MX.Middlewares;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +29,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // PRIMERO: Registra servicios de aplicación CORE
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>(); // ¡ESTA LÍNEA YA ESTÁ!
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
+builder.Services.AddScoped<IRoleCommandService, RoleCommandService>();
+builder.Services.AddScoped<IRoleQueryService, RoleQueryService>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+
+
 
 // JWT Configuration
 builder.Services.Configure<JwtSettings>(
@@ -71,6 +83,27 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("AdminOnly", policy =>
+            policy.RequireRole("Administrador"));
+    });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy
+            .WithOrigins(
+                "http://localhost:5173"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+
+
 // LUEGO: Infrastructure (DbContext, Repositories, etc.)
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -109,6 +142,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("FrontendPolicy");
 
 // Autorización 
 app.UseAuthentication();

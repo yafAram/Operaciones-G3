@@ -1,4 +1,5 @@
-﻿using API.G3Operaciones.Garcias.MX.Application.Common.Validation;
+﻿using API.G3Operaciones.Garcias.MX.Application.Common.Security;
+using API.G3Operaciones.Garcias.MX.Application.Common.Validation;
 using API.G3Operaciones.Garcias.MX.Application.Users.DTOs;
 using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
 using API.G3Operaciones.Garcias.MX.Domain.Entities;
@@ -36,7 +37,7 @@ namespace API.G3Operaciones.Garcias.MX.Application.Users.Services
             var exists = await _context.Set<UserCredential>()
                 .AnyAsync(x => x.Username == dto.Username);
 
-            if (!UsernameValidator.IsValid(dto.FullName))
+            if (!UsernameValidator.IsValid(dto.Username))
                 throw new ValidationException(
                     "Formato Incorrecto"
                 );

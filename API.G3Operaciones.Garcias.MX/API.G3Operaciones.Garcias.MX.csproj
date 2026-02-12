@@ -49,7 +49,6 @@
   <ItemGroup>
     <Folder Include="Application\Auth\Services\" />
     <Folder Include="Application\Common\Interfaces\" />
-    <Folder Include="Application\Common\Mappings\" />
     <Folder Include="Application\Inventory\DTOs\" />
     <Folder Include="Application\Inventory\Interfaces\" />
     <Folder Include="Application\Inventory\Services\" />

@@ -38,6 +38,31 @@ namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Users
             RoleId = roleId;
             Status = UserStatus.Active;
         }
+
+        public void UpdatePersonalInfo(string firstName, string lastName, string phoneNumber)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            PhoneNumber = phoneNumber;
+        }
+
+        public void Deactivate()
+        {
+            Status = UserStatus.Inactive;
+        }
+
+        public void ChangeRole(Guid roleId)
+        {
+            RoleId = roleId;
+        }
+
+
+        public void ChangeBirthDate(DateTime birthDate)
+        {
+            BirthDate = birthDate;
+        }
+
+
     }
 
 }

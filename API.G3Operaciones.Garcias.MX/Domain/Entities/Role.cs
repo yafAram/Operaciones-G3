@@ -16,5 +16,32 @@ namespace API.G3Operaciones.Garcias.MX.Domain.Entities
             CreatedAt = DateTime.UtcNow;
             Status = RoleStatus.Active; // Ajusta según tu lógica de estados
         }
+
+
+
+        public Role(string name)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            Status = RoleStatus.Active;
+            CreatedAt = DateTime.UtcNow;
+        }
+
+        public void Update(string name)
+        {
+            Name = name;
+        }
+
+        public void Activate()
+        {
+            Status = RoleStatus.Active;
+        }
+
+        public void Deactivate()
+        {
+            Status = RoleStatus.Inactive;
+        }
+
+
     }
 }
