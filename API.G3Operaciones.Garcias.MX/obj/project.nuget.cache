@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "d/hFOT09sFQ=",
+  "dgSpecHash": "7zijeejkgAs=",
   "success": true,
   "projectFilePath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
   "expectedPackageFiles": [
@@ -111,11 +111,11 @@
     {
       "code": "NU1510",
       "level": "Warning",
-      "message": "PackageReference Microsoft.Extensions.DependencyInjection no se eliminará. Considere la posibilidad de quitar este paquete de las dependencias, ya que es probable que no sea necesario.",
+      "message": "PackageReference Microsoft.Extensions.Configuration no se eliminará. Considere la posibilidad de quitar este paquete de las dependencias, ya que es probable que no sea necesario.",
       "projectPath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
       "warningLevel": 1,
       "filePath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
-      "libraryId": "Microsoft.Extensions.DependencyInjection",
+      "libraryId": "Microsoft.Extensions.Configuration",
       "targetGraphs": [
         "net10.0"
       ]
@@ -123,11 +123,11 @@
     {
       "code": "NU1510",
       "level": "Warning",
-      "message": "PackageReference Microsoft.Extensions.Configuration no se eliminará. Considere la posibilidad de quitar este paquete de las dependencias, ya que es probable que no sea necesario.",
+      "message": "PackageReference Microsoft.Extensions.DependencyInjection no se eliminará. Considere la posibilidad de quitar este paquete de las dependencias, ya que es probable que no sea necesario.",
       "projectPath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
       "warningLevel": 1,
       "filePath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
-      "libraryId": "Microsoft.Extensions.Configuration",
+      "libraryId": "Microsoft.Extensions.DependencyInjection",
       "targetGraphs": [
         "net10.0"
       ]

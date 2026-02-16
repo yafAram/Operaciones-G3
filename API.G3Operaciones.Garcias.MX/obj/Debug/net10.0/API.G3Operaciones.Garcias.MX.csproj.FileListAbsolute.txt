@@ -540,4 +540,3 @@ C:\Users\DELL\Documents\Estadia\proyecto\Desarrollo\Backend\Operaciones-G3\API.G
 C:\Users\DELL\Documents\Estadia\proyecto\Desarrollo\Backend\Operaciones-G3\API.G3Operaciones.Garcias.MX\obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.genruntimeconfig.cache
 C:\Users\DELL\Documents\Estadia\proyecto\Desarrollo\Backend\Operaciones-G3\API.G3Operaciones.Garcias.MX\obj\Debug\net10.0\ref\API.G3Operaciones.Garcias.MX.dll
 C:\Users\DELL\Documents\Estadia\proyecto\Desarrollo\Backend\Operaciones-G3\API.G3Operaciones.Garcias.MX\bin\Debug\net10.0\BCrypt.Net-Next.dll
-C:\Users\DELL\Documents\Estadia\proyecto\Desarrollo\Backend\Operaciones-G3\API.G3Operaciones.Garcias.MX\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

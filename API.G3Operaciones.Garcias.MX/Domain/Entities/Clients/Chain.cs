@@ -5,12 +5,9 @@
         public Guid Id { get; private set; }
 
         public string Name { get; private set; } = default!;
-
-        // Número base corporativo
         public string BasePhoneNumber { get; private set; } = default!;
 
         public bool IsActive { get; private set; }
-
         public DateTime CreatedAt { get; private set; }
 
         public ICollection<Client> Clients { get; private set; } = new List<Client>();
@@ -32,7 +29,14 @@
             BasePhoneNumber = basePhoneNumber;
         }
 
-        public void Deactivate() => IsActive = false;
+        public void Deactivate()
+        {
+            if (Clients.Any(c => c.IsActive))
+                throw new InvalidOperationException("No se puede desactivar una cadena con sucursales activas.");
+
+            IsActive = false;
+        }
+
         public void Activate() => IsActive = true;
     }
 }
