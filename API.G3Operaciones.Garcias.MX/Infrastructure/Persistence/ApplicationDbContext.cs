@@ -17,12 +17,14 @@ namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence
         public DbSet<UserCredential> UserCredentials => Set<UserCredential>();
         public DbSet<AuditLog> AuditLogs { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(
                 typeof(ApplicationDbContext).Assembly);
+
         }
     }
 
