@@ -1,5 +1,9 @@
 ﻿using API.G3Operaciones.Garcias.MX.Application.Auth.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Auth.Services;
+using API.G3Operaciones.Garcias.MX.Application.Chains.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Chains.Services;
+using API.G3Operaciones.Garcias.MX.Application.Clients.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Clients.Services;
 using API.G3Operaciones.Garcias.MX.Application.Common.Mappings;
 using API.G3Operaciones.Garcias.MX.Application.Common.Security;
 using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
@@ -38,6 +42,20 @@ builder.Services.AddScoped<IUserQueryService, UserQueryService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IChainService, ChainService>();
+
+
+
+//Mapping
+builder.Services.AddAutoMapper(cfg =>
+{
+}, typeof(ClientProfile).Assembly);
+
+//LOGS
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 
 
@@ -50,16 +68,55 @@ builder.Services.Configure<JwtSettings>(
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
 
+
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
     {
+        // Log completo de ModelState
+        foreach (var entry in context.ModelState)
+        {
+            var key = entry.Key;
+            var errors = entry.Value.Errors.Select(e => e.ErrorMessage);
+            Console.WriteLine($"Campo: {key} - Errores: {string.Join(", ", errors)}");
+        }
+
+        // También loguear excepciones internas si hubiera
+        if (context.ModelState.ErrorCount > 0)
+        {
+            foreach (var value in context.ModelState.Values)
+            {
+                foreach (var error in value.Errors)
+                {
+                    if (error.Exception != null)
+                    {
+                        Console.WriteLine($"Excepción: {error.Exception}");
+                    }
+                }
+            }
+        }
+
         return new BadRequestObjectResult(new
         {
-            error = "Datos de inicio de sesión inválidos"
+            error = "Datos de inicio de sesión inválidos",
+            modelStateErrors = context.ModelState
         });
     };
 });
+
+
+//builder.Services.Configure<ApiBehaviorOptions>(options =>
+//{
+//    options.InvalidModelStateResponseFactory = context =>
+//    {
+//        return new BadRequestObjectResult(new
+//        {
+//            error = "Datos de inicio de sesión inválidos"
+//        });
+//    };
+//});
+
+
 
 // Authentication
 builder.Services.AddAuthentication("Bearer")

@@ -26,6 +26,14 @@ namespace API.G3Operaciones.Garcias.MX.Middlewares
                     ApiResponseDto.Fail(ex.Message)
                 );
             }
+            catch (InvalidOperationException ex)
+            {
+                // Capturamos errores de validación de reglas de negocio (como extensión sin cadena)
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                await context.Response.WriteAsJsonAsync(
+                    ApiResponseDto.Fail(ex.Message)
+                );
+            }
             catch (UnauthorizedAccessException ex)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
