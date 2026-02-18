@@ -7,6 +7,10 @@ namespace API.G3Operaciones.Garcias.MX.Application.Clients.Interfaces
         Task<ClientResponseDto> CreateAsync(CreateClientDto dto);
         Task<ClientResponseDto> UpdateAsync(Guid id, UpdateClientDto dto);
         Task<List<ClientResponseDto>> GetAllAsync();
+
+        Task DeactivateAsync(Guid id);
+        Task<ClientDetailDto> GetDetailByIdAsync(Guid id);
+
     }
 
 }

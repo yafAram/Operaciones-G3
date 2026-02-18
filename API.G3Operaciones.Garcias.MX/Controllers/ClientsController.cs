@@ -52,15 +52,29 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
             return Ok(result);
         }
 
+
+
+        // =====================================================
+        // Desactivar cliente
+        // =====================================================
+
+        [HttpPatch("{id:guid}/deactivate")]
+        public async Task<IActionResult> Deactivate(Guid id)
+        {
+            await _service.DeactivateAsync(id);
+            return NoContent();
+        }
+
+
         //// =====================================================
         //// Obtener por Id
         //// =====================================================
-        //[HttpGet("{id:guid}")]
-        //[Authorize(Roles = "Administrador,Operador")]
-        //public async Task<IActionResult> GetById(Guid id)
-        //{
-        //    var result = await _service.GetByIdAsync(id);
-        //    return Ok(result);
-        //}
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _service.GetDetailByIdAsync(id);
+            return Ok(result);
+        }
+
     }
 }

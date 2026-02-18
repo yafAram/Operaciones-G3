@@ -14,9 +14,13 @@
 
         public string Address { get; private set; } = default!;
         public string WorkSchedule { get; private set; } = default!;
+        public decimal? Latitude { get; private set; }
+        public decimal? Longitude { get; private set; }
 
         public bool IsActive { get; private set; }
         public DateTime CreatedAt { get; private set; }
+        public DateTime? DeactivatedAt { get; private set; }
+
 
         protected Client() { }
 
@@ -26,7 +30,9 @@
             string address,
             string workSchedule,
             Guid? chainId = null,
-            string? extension = null)
+            string? extension = null,
+            decimal? latitude = null,
+            decimal? longitude = null)
         {
             ValidateExtension(chainId, extension);
 
@@ -37,9 +43,14 @@
             WorkSchedule = workSchedule;
             ChainId = chainId;
             Extension = extension;
+
+            Latitude = latitude;
+            Longitude = longitude;
+
             IsActive = true;
             CreatedAt = DateTime.UtcNow;
         }
+
 
         public void Update(
             string name,
@@ -61,13 +72,31 @@
             Extension = newChainId == null ? null : extension;
         }
 
+        public void UpdateLocation(decimal? latitude, decimal? longitude)
+        {
+            Latitude = latitude;
+            Longitude = longitude;
+        }
+
         private void ValidateExtension(Guid? chainId, string? extension)
         {
             if (chainId == null && extension != null)
                 throw new InvalidOperationException("No se puede asignar extensión sin cadena.");
         }
 
-        public void Deactivate() => IsActive = false;
-        public void Activate() => IsActive = true;
+        public void Deactivate()
+        {
+            if (!IsActive)
+                throw new InvalidOperationException("El cliente ya está desactivado.");
+
+            IsActive = false;
+            DeactivatedAt = DateTime.UtcNow;
+        }
+
+        public void Activate()
+        {
+            IsActive = true;
+            DeactivatedAt = null;
+        }
     }
 }

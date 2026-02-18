@@ -8,5 +8,9 @@
         public string WorkSchedule { get; set; } = default!;
         public Guid? ChainId { get; set; }
         public string? Extension { get; set; }
+
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
     }
+
 }

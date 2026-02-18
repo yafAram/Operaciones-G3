@@ -1,6 +1,8 @@
 ﻿using API.G3Operaciones.Garcias.MX.Application.Clients.Dto;
 using API.G3Operaciones.Garcias.MX.Application.Clients.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Common.Validation;
+using API.G3Operaciones.Garcias.MX.Application.Orders.DTOs;
+using API.G3Operaciones.Garcias.MX.Application.Products.DTOs;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Clients;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
 using AutoMapper;
@@ -61,6 +63,42 @@ namespace API.G3Operaciones.Garcias.MX.Application.Clients.Services
             var clients = await _context.Clients.ToListAsync();
             return _mapper.Map<List<ClientResponseDto>>(clients);
         }
+
+
+        public async Task DeactivateAsync(Guid id)
+        {
+            var client = await _context.Clients
+                .FirstOrDefaultAsync(c => c.Id == id)
+                ?? throw new ValidationException("Cliente no encontrado.");
+
+            client.Deactivate();
+
+            await _context.SaveChangesAsync();
+        }
+
+
+
+        public async Task<ClientDetailDto> GetDetailByIdAsync(Guid id)
+        {
+            var client = await _context.Clients
+                .Include(c => c.Chain)
+                .FirstOrDefaultAsync(c => c.Id == id)
+                ?? throw new ValidationException("Cliente no encontrado.");
+
+            var dto = _mapper.Map<ClientDetailDto>(client);
+
+            // Como aún no existen Orders, dejamos estadísticas en cero.
+            dto.TotalOrders = 0;
+            dto.TotalPurchases = 0;
+            dto.TopProducts = new List<ProductTopDto>();
+            dto.OrdersByDate = new List<OrdersByDateDto>();
+
+            return dto;
+        }
+
+
+
+
     }
 
 }

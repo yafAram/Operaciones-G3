@@ -52,10 +52,8 @@
     <Folder Include="Application\Inventory\DTOs\" />
     <Folder Include="Application\Inventory\Interfaces\" />
     <Folder Include="Application\Inventory\Services\" />
-    <Folder Include="Application\Orders\DTOs\" />
     <Folder Include="Application\Orders\Interfaces\" />
     <Folder Include="Application\Orders\Services\" />
-    <Folder Include="Application\Products\DTOs\" />
     <Folder Include="Application\Products\Interfaces\" />
     <Folder Include="Application\Products\Services\" />
     <Folder Include="Application\Reports\DTOs\" />
