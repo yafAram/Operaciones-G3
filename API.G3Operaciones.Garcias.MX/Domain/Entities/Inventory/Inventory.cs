@@ -1,4 +1,5 @@
-﻿using API.G3Operaciones.Garcias.MX.Domain.Entities.Products;
+﻿using System;
+using API.G3Operaciones.Garcias.MX.Domain.Entities.Products;
 
 namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory
 {

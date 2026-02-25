@@ -1,16 +1,21 @@
-﻿namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory
+﻿using System;
+using API.G3Operaciones.Garcias.MX.Domain.Entities.Products;
+
+namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory
 {
     public class InventoryMovement
     {
         public Guid Id { get; private set; }
 
         public Guid ProductId { get; private set; }
+        public Product Product { get; private set; } = default!;
+
         public Guid WarehouseId { get; private set; }
+        public Warehouse Warehouse { get; private set; } = default!;
 
         public decimal Quantity { get; private set; }
 
-        public string MovementType { get; private set; } = default!;
-        // IN / OUT / ADJUSTMENT
+        public MovementType MovementType { get; private set; }
 
         public string? Reference { get; private set; }
 
@@ -22,7 +27,7 @@
             Guid productId,
             Guid warehouseId,
             decimal quantity,
-            string movementType,
+            MovementType movementType,
             string? reference)
         {
             Id = Guid.NewGuid();
