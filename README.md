@@ -1,192 +1,493 @@
-# 🚀 G3Operaciones API
+🚀 G3Operaciones API
 
-API backend para la plataforma **G3Operaciones**, desarrollada con **ASP.NET (Core 10)**, **SQL Server** y **Clean Architecture**, orientada a escalabilidad, mantenibilidad y control total del dominio del negocio.
+API backend para la plataforma G3Operaciones, desarrollada con ASP.NET Core (.NET 10), SQL Server 2022 y basada en Clean Architecture.
 
----
+El sistema está orientado a la gestión operativa integral de:
 
-## 📌 Estado actual del proyecto
+Usuarios y roles
 
-🟢 **Fase:** Base técnica / Infraestructura inicial
+Clientes y cadenas
+
+Productos
+
+Inventarios y almacenes
+
+Configuración de precios
+
+Gestión avanzada de pedidos (Orders)
+
+El proyecto prioriza control del dominio, trazabilidad, seguridad, mantenibilidad y escalabilidad real.
+
+📌 Estado actual del proyecto
+
+🟢 Fase actual: Núcleo del sistema completamente estructurado y módulos principales implementados.
 
 Actualmente el proyecto cuenta con:
 
-- Arquitectura limpia definida y aplicada
-- API funcional levantando correctamente
-- Swagger / OpenAPI configurado
-- Conexión a SQL Server configurada
-- SQL Server contenerizado con Docker
-- Migraciones preparadas (no ejecutadas)
-- Documentación técnica activa
+Arquitectura limpia aplicada correctamente
 
-No se han creado entidades ni tablas aún (esto es intencional).
+Separación por capas (Domain, Application, Infrastructure, API)
 
----
+SQL Server 2022 configurado
 
-## 🧱 Arquitectura
+Docker para entorno reproducible
 
-Se utiliza **Clean Architecture**, implementada **por carpetas dentro de un solo proyecto**, evitando sobreingeniería sin sacrificar buenas prácticas.
+Entity Framework Core con Fluent API por entidad
 
-### Principios clave
+Migraciones estructurales listas
 
-- Separación de responsabilidades
-- Bajo acoplamiento
-- Alta cohesión
-- Independencia de frameworks
-- Código testeable y escalable
+Seguridad con JWT implementada
 
----
+Políticas de autorización por rol
 
-## 📁 Estructura del proyecto
+Middleware global de manejo de excepciones
 
-```
+Swagger con autenticación configurada
+
+Módulo completo de Orders integrado al dominio
+
+El sistema ya no está en fase inicial.
+Cuenta con una base sólida preparada para crecimiento empresarial.
+
+🧱 Arquitectura
+
+Se implementa Clean Architecture, organizada por capas dentro de un único proyecto para mantener simplicidad sin perder buenas prácticas.
+
+Capas principales
+Domain
+
+Contiene:
+
+Entidades
+
+Enums
+
+Reglas de negocio
+
+Lógica central del dominio
+
+No depende de frameworks externos.
+
+Application
+
+Contiene:
+
+DTOs
+
+Interfaces
+
+Casos de uso
+
+Validaciones
+
+Excepciones personalizadas
+
+Orquesta el comportamiento del dominio.
+
+Infrastructure
+
+Contiene:
+
+Entity Framework Core
+
+Configuraciones Fluent API
+
+DbContext
+
+Persistencia
+
+Integraciones técnicas
+
+Implementa las interfaces definidas en Application.
+
+API (Controllers)
+
+Contiene:
+
+Endpoints REST
+
+Autorización
+
+Validaciones de entrada
+
+Respuestas HTTP
+
+Integración con JWT
+
+📁 Estructura del proyecto
+
 G3Operaciones.API
-│
-├── Controllers        # Endpoints REST
-├── Domain             # Entidades y reglas de negocio
-├── Application        # Casos de uso, DTOs, interfaces
-├── Infrastructure     # EF Core, DB, servicios técnicos
-│   └── Persistence
-├── Middlewares        # Middlewares personalizados
-├── Filters            # Filtros globales
-├── Configurations     # Configuraciones centralizadas
-├── Program.cs
-└── appsettings.json
-```
 
----
+Controllers
 
-## 🗄️ Base de datos
+Domain
 
-### Motor
+Entities
 
-- **SQL Server 2022 – Developer Edition**
+Users
 
-### ORM
+Clients
 
-- **Entity Framework Core**
+Products
 
-### Estado actual
+Inventory
 
-- Conexión configurada
-- DbContext registrado
-- Sin migraciones ejecutadas
-- Sin creación automática de tablas
+Pricing
 
-Esto garantiza control total del esquema cuando el dominio esté definido.
+Orders
 
----
+Application
 
-## 🐳 Docker
+DTOs
 
-SQL Server corre en un contenedor Docker para garantizar:
+Interfaces
 
-- Entornos reproducibles
-- Onboarding rápido
-- Eliminación de dependencias locales
+Common
 
-### docker-compose.yml (SQL Server)
+Infrastructure
 
-- Puerto: `1433`
-- Usuario: `sa`
-- Persistencia con volúmenes
-- Red dedicada
+Persistence
 
-El contenedor acepta **conexiones remotas**.
+Configurations
 
----
+ApplicationDbContext.cs
 
-## 🔐 Seguridad (estado actual)
+Middlewares
 
-- JWT aún no implementado
-- Autorización preparada en pipeline
-- Se implementará autenticación propia (no Identity)
+Filters
 
----
+Configurations
 
-## 📦 Paquetes NuGet principales
+Program.cs
 
-- Entity Framework Core
-- SQL Server Provider
-- Swagger (Swashbuckle)
-- FluentValidation
-- AutoMapper
-- Serilog
-- Polly
-- xUnit / Moq (testing)
+appsettings.json
 
-Todos seleccionados por estabilidad y compatibilidad con .NET moderno.
+🗄️ Base de datos
+Motor
 
----
+SQL Server 2022 Developer Edition
 
-## ⚙️ Configuración de ejecución
+ORM
 
-### Requisitos
+Entity Framework Core
 
-- .NET SDK 10
-- Docker Desktop
+Características implementadas
 
-### Levantar SQL Server
+DbContext centralizado
 
-```bash
+Configuración individual por entidad con IEntityTypeConfiguration
+
+Conversión de enums a int
+
+Índices estratégicos
+
+Relaciones definidas explícitamente
+
+Precisión decimal controlada
+
+Eliminación en cascada donde corresponde
+
+Migraciones estructurales listas
+
+No se utiliza EnsureCreated() ni generación automática no controlada.
+
+🐳 Docker
+
+SQL Server corre dentro de contenedor Docker para garantizar:
+
+Entornos reproducibles
+
+Onboarding rápido
+
+Aislamiento del entorno
+
+Persistencia mediante volúmenes
+
+Levantar base de datos
 docker compose up -d
-```
 
-### Ejecutar la API
+Puerto expuesto: 1433
 
-```bash
+🔐 Seguridad
+Autenticación
+
+Se implementa autenticación mediante:
+
+JWT personalizado
+
+Expiración configurable
+
+Claims personalizados
+
+No se utiliza ASP.NET Identity.
+
+Autorización
+
+Basada en políticas por rol.
+
+Ejemplo:
+
+[Authorize(Policy = "Administrador")]
+
+Las políticas están centralizadas y configuradas en el pipeline.
+
+📦 Módulos Implementados
+👤 USERS
+
+Permite:
+
+Registro y gestión de usuarios
+
+Gestión de roles
+
+Manejo de credenciales
+
+Auditoría de acciones
+
+Proporciona la base para autenticación y autorización.
+
+🏢 CLIENTS
+
+Incluye:
+
+Clientes individuales
+
+Cadenas comerciales
+
+Permite asociar pedidos y operadores a sucursales o cadenas específicas.
+
+📦 PRODUCTS
+
+Gestión de productos con:
+
+Identificador
+
+Nombre
+
+Estado activo/inactivo
+
+Preparado para integración con inventarios y precios dinámicos.
+
+🏬 INVENTORY
+
+Incluye:
+
+Warehouses (almacenes)
+
+Inventories (existencias por producto)
+
+InventoryMovements (movimientos históricos)
+
+Permite:
+
+Control por almacén
+
+Registro de entradas y salidas
+
+Base para validación previa a pedidos
+
+💰 PRICING
+
+Configuración flexible de precios:
+
+Precio general
+
+Precio por cliente
+
+Precio por cadena
+
+Diseñado para expansión futura con reglas dinámicas.
+
+📦 ORDERS (Módulo Completo)
+
+Este es uno de los módulos más robustos del sistema.
+
+Entidades principales
+Order
+
+Operador asignado
+
+Sucursal o cadena
+
+Estado
+
+Total
+
+Coordenadas (latitud/longitud)
+
+Snapshot del nombre de sucursal
+
+Fecha creación
+
+Fecha cierre
+
+OrderItem
+
+Producto
+
+Cantidad
+
+Precio unitario
+
+Subtotal
+
+Snapshot del nombre del producto
+
+OrderHistory
+
+Permite trazabilidad completa:
+
+Usuario que realizó el cambio
+
+Qué cambió
+
+Valor anterior
+
+Valor nuevo
+
+Fecha y hora
+
+OrderCallLog
+
+Registro operativo de llamadas:
+
+Resultado de llamada
+
+Fecha programada (si aplica)
+
+Notas
+
+OperatorAssignment
+
+Controla:
+
+Qué operador atiende qué sucursal o cadena
+
+Día asignado
+
+Activación o desactivación
+
+Ventana de tiempo permitida
+
+OrderScheduleConfiguration
+
+Define:
+
+Días de levantamiento de pedidos
+
+Días de entrega
+
+Ventanas horarias
+
+Configuración activa/inactiva
+
+Características del módulo Orders
+
+Conversión de enums
+
+Índices optimizados
+
+Historial completo de modificaciones
+
+Base para control de ventanas de 38 horas
+
+Preparado para integración con generación de PDF y rutas
+
+⚙️ Flujo General del Sistema
+
+Usuario inicia sesión
+
+Se genera JWT
+
+Se valida acceso por rol
+
+Operador consulta asignaciones activas
+
+Se valida día permitido
+
+Se genera pedido
+
+Se registran items
+
+Se registra historial
+
+Se pueden modificar pedidos con trazabilidad
+
+Se puede cancelar (desactivar) pedido
+
+Se conserva historial completo
+
+🔍 Swagger
+
+Disponible en entorno de desarrollo.
+
+Incluye:
+
+Documentación automática
+
+Soporte para autenticación JWT
+
+Pruebas directas de endpoints
+
+🧪 Testing
+
+Preparado para:
+
+xUnit
+
+Moq
+
+WebApplicationFactory
+
+Enfoque en:
+
+Reglas de negocio
+
+Seguridad
+
+Validaciones
+
+Casos críticos del dominio
+
+⚙️ Ejecución del proyecto
+Requisitos
+
+.NET SDK 10
+
+Docker Desktop
+
+SQL Server container activo
+
+Ejecutar API
 dotnet run
-```
+Crear migración
+dotnet ef migrations add NombreMigracion
+Aplicar migraciones
+dotnet ef database update
+📈 Estado actual del sistema
 
-Swagger disponible en entorno de desarrollo.
+El proyecto evolucionó de:
 
----
+Base técnica inicial
+→ Arquitectura estructurada
+→ Implementación de módulos funcionales
+→ Seguridad completa
+→ Módulo Orders avanzado
 
-## 🔍 Validación de conexión a BD
+Actualmente se encuentra preparado para:
 
-La conectividad se valida mediante:
+Desarrollo frontend
 
-- `Database.CanConnect()`
-- Endpoints de health (solo DEV)
+Dashboards operativos
 
-No se utilizan:
-- EnsureCreated()
-- Migraciones automáticas forzadas
+Integración móvil
 
----
+Escalamiento empresarial
 
-## 🧪 Testing (planificado)
+Optimización de consultas
 
-- Pruebas unitarias por capa
-- Pruebas de integración con WebApplicationFactory
-- Cobertura enfocada en reglas de negocio
+🧠 Principio rector
 
----
-
-## 📖 Documentación
-
-Existe un **manual técnico vivo**, donde se documenta:
-
-- Decisiones arquitectónicas
-- Infraestructura
-- Procesos
-- Evolución del sistema
-
-Este README es un resumen operativo.
-
----
-
-## 🧭 Próximos pasos
-
-1. Definir entidades del dominio
-2. Configurar DbSets y Fluent API
-3. Crear primera migración
-4. Implementar autenticación JWT
-5. Definir repositorios
-
----
-
-## 🧠 Filosofía del proyecto
-
-> "Primero una base sólida, luego velocidad."
-
-G3Operaciones prioriza calidad técnica, control del dominio y crecimiento sostenible desde el día uno.
+Base sólida primero.
+Escalabilidad después.
+Control del dominio siempre.
