@@ -2,6 +2,7 @@
 using API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Clients;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory;
+using API.G3Operaciones.Garcias.MX.Domain.Entities.Orders;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Pricing;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Products;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Users;
@@ -47,6 +48,15 @@ namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence
         // ===============================
         public DbSet<PriceConfiguration> PriceConfigurations => Set<PriceConfiguration>();
 
+        // ===============================
+        // ORDERS
+        // ===============================
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<OrderHistory> OrderHistories => Set<OrderHistory>();
+        public DbSet<OrderCallLog> OrderCallLogs => Set<OrderCallLog>();
+        public DbSet<OperatorAssignment> OperatorAssignments => Set<OperatorAssignment>();
+        public DbSet<OrderScheduleConfiguration> OrderScheduleConfigurations => Set<OrderScheduleConfiguration>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

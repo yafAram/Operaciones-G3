@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\**" />
+    <Compile Remove="obj\**" />
     <Content Remove="Controllers\**" />
+    <Content Remove="obj\**" />
     <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="obj\**" />
     <None Remove="Controllers\**" />
+    <None Remove="obj\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,10 +27,6 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WarehouseController.cs" />
-    <Compile Include="obj\Debug\net10.0\.NETCoreApp,Version=v10.0.AssemblyAttributes.cs" />
-    <Compile Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.AssemblyInfo.cs" />
-    <Compile Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.GlobalUsings.g.cs" />
-    <Compile Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.MvcApplicationPartsAssemblyInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,23 +58,6 @@
     <Content Include="bin\Debug\net10.0\LatoFont\Lato-ThinItalic.ttf" />
     <Content Include="bin\Debug\net10.0\LatoFont\OFL.txt" />
     <Content Include="bin\Debug\net10.0\MvcTestingAppManifest.json" />
-    <Content Include="obj\API.G3Operaciones.Garcias.MX.csproj.nuget.dgspec.json" />
-    <Content Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.sourcelink.json" />
-    <Content Include="obj\Debug\net10.0\ApiEndpoints.json" />
-    <Content Include="obj\Debug\net10.0\EndpointInfo\API.G3Operaciones.Garcias.MX.json" />
-    <Content Include="obj\Debug\net10.0\MvcTestingAppManifest.json" />
-    <Content Include="obj\Debug\net10.0\rjimswa.dswa.cache.json" />
-    <Content Include="obj\Debug\net10.0\rjsmcshtml.dswa.cache.json" />
-    <Content Include="obj\Debug\net10.0\rjsmrazor.dswa.cache.json" />
-    <Content Include="obj\Debug\net10.0\rpswa.dswa.cache.json" />
-    <Content Include="obj\Debug\net10.0\staticwebassets.build.endpoints.json" />
-    <Content Include="obj\Debug\net10.0\staticwebassets.build.json" />
-    <Content Include="obj\Debug\net10.0\staticwebassets.development.json" />
-    <Content Include="obj\Debug\net10.0\staticwebassets.references.upToDateCheck.txt" />
-    <Content Include="obj\Debug\net10.0\staticwebassets.removed.txt" />
-    <Content Include="obj\Debug\net10.0\staticwebassets.upToDateCheck.txt" />
-    <Content Include="obj\project.assets.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -131,12 +114,10 @@
     <Folder Include="Domain\Common\" />
     <Folder Include="Domain\Entities\Incidents\" />
     <Folder Include="Domain\Entities\Routes\" />
-    <Folder Include="Domain\Entities\Orders\" />
     <Folder Include="Filters\Auth\" />
     <Folder Include="Infrastructure\Repositories\" />
     <Folder Include="Configurations\" />
     <Folder Include="Migrations\" />
-    <Folder Include="obj\Debug\net10.0\staticwebassets\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -677,26 +658,6 @@
     <None Include="bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" />
     <None Include="bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
     <None Include="bin\Debug\net10.0\zh-Hant\Microsoft.Data.SqlClient.resources.dll" />
-    <None Include="obj\API.G3Operaciones.Garcias.MX.csproj.nuget.g.props" />
-    <None Include="obj\API.G3Operaciones.Garcias.MX.csproj.nuget.g.targets" />
-    <None Include="obj\Debug\net10.0\API.G3Op.BE3F28B7.Up2Date" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.AssemblyInfoInputs.cache" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.assets.cache" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.csproj.AssemblyReference.cache" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.csproj.BuildWithSkipAnalyzers" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.csproj.CoreCompileInputs.cache" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.dll" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.GeneratedMSBuildEditorConfig.editorconfig" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.genruntimeconfig.cache" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.MvcApplicationPartsAssemblyInfo.cache" />
-    <None Include="obj\Debug\net10.0\API.G3Operaciones.Garcias.MX.pdb" />
-    <None Include="obj\Debug\net10.0\apphost.exe" />
-    <None Include="obj\Debug\net10.0\EndpointInfo\API.G3Operaciones.Garcias.MX.OpenApiFiles.cache" />
-    <None Include="obj\Debug\net10.0\refint\API.G3Operaciones.Garcias.MX.dll" />
-    <None Include="obj\Debug\net10.0\ref\API.G3Operaciones.Garcias.MX.dll" />
-    <None Include="obj\Debug\net10.0\staticwebassets.build.json.cache" />
-    <None Include="obj\Debug\net10.0\swae.build.ex.cache" />
-    <None Include="obj\project.nuget.cache" />
   </ItemGroup>
 
 </Project>
