@@ -174,8 +174,7 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Quantity")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("WarehouseId")
                         .HasColumnType("uniqueidentifier");
@@ -199,24 +198,27 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MovementType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("MovementType")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Quantity")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Reference")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<Guid>("WarehouseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("WarehouseId");
 
                     b.ToTable("InventoryMovements");
                 });
@@ -235,11 +237,13 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
@@ -265,8 +269,7 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal(18,4)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -277,11 +280,9 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.HasIndex("ProductId", "ChainId", "ClientId")
-                        .IsUnique()
-                        .HasFilter("[ChainId] IS NOT NULL AND [ClientId] IS NOT NULL");
+                    b.HasIndex("ProductId");
 
-                    b.ToTable("PriceConfiguration");
+                    b.ToTable("PriceConfigurations");
                 });
 
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Products.Product", b =>
@@ -296,6 +297,9 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -303,8 +307,7 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UnitOfMeasure")
-                        .IsRequired()
+                    b.Property<string>("Presentation")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -386,13 +389,31 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                 {
                     b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Chain", "Chain")
                         .WithMany("Clients")
-                        .HasForeignKey("ChainId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ChainId");
 
                     b.Navigation("Chain");
                 });
 
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory.Inventory", b =>
+                {
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Products.Product", "Product")
+                        .WithMany("Inventories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory.Warehouse", "Warehouse")
+                        .WithMany("Inventories")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory.InventoryMovement", b =>
                 {
                     b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Products.Product", "Product")
                         .WithMany()
@@ -401,7 +422,7 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                         .IsRequired();
 
                     b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory.Warehouse", "Warehouse")
-                        .WithMany()
+                        .WithMany("Movements")
                         .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -420,13 +441,12 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
 
                     b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Products.Product", "Product")
-                        .WithMany()
+                        .WithMany("Prices")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Chain");
@@ -450,6 +470,20 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Chain", b =>
                 {
                     b.Navigation("Clients");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory.Warehouse", b =>
+                {
+                    b.Navigation("Inventories");
+
+                    b.Navigation("Movements");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Products.Product", b =>
+                {
+                    b.Navigation("Inventories");
+
+                    b.Navigation("Prices");
                 });
 #pragma warning restore 612, 618
         }

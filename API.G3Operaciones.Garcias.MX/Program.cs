@@ -6,6 +6,12 @@ using API.G3Operaciones.Garcias.MX.Application.Clients.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Clients.Services;
 using API.G3Operaciones.Garcias.MX.Application.Common.Mappings;
 using API.G3Operaciones.Garcias.MX.Application.Common.Security;
+using API.G3Operaciones.Garcias.MX.Application.Inventory.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Inventory.Services;
+using API.G3Operaciones.Garcias.MX.Application.Pricing.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Pricing.Services;
+using API.G3Operaciones.Garcias.MX.Application.Products.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Products.Services;
 using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Users.Services;
 using API.G3Operaciones.Garcias.MX.Infrastructure;
@@ -14,6 +20,7 @@ using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence.Configurations;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Security;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Services;
 using API.G3Operaciones.Garcias.MX.Middlewares;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -44,6 +51,9 @@ builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IChainService, ChainService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IWarehouseService, WarehouseService>();
+builder.Services.AddScoped<IPriceConfigurationService, PriceConfigurationService>();
 
 
 
@@ -160,6 +170,12 @@ builder.Services.AddCors(options =>
 });
 
 
+// Limite de tamaño de subida (10MB)
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 10 * 1024 * 1024;
+});
+
 
 // LUEGO: Infrastructure (DbContext, Repositories, etc.)
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -205,6 +221,12 @@ app.UseCors("FrontendPolicy");
 // Autorización 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//Imagenes
+// Habilitar archivos estáticos
+app.UseStaticFiles();
+
+
 
 app.MapControllers();
 

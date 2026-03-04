@@ -2,7 +2,8 @@
 {
     public class ProductTopDto
     {
-        public string ProductName { get; set; } = default!;
-        public int Quantity { get; set; }
+        public Guid ProductId { get; set; }
+        public string Name { get; set; } = null!;
+        public decimal TotalSold { get; set; }
     }
 }

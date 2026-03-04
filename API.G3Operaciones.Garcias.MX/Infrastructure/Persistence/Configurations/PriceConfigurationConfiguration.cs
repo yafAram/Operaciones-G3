@@ -8,34 +8,26 @@ namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<PriceConfiguration> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(p => p.Id);
 
-            builder.Property(x => x.Price)
+            builder.Property(p => p.Price)
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
-            builder.Property(x => x.IsActive)
+            builder.Property(p => p.IsActive)
                 .IsRequired();
 
-            builder.Property(x => x.CreatedAt)
+            builder.Property(p => p.CreatedAt)
                 .IsRequired();
 
-            builder.HasOne(x => x.Product)
+            builder.HasOne(p => p.Product)
                 .WithMany(p => p.Prices)
-                .HasForeignKey(x => x.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(p => p.ProductId);
 
-            builder.HasOne(x => x.Chain)
+            builder.HasOne(p => p.Chain)
                 .WithMany()
-                .HasForeignKey(x => x.ChainId)
+                .HasForeignKey(p => p.ChainId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(x => x.Client)
-                .WithMany()
-                .HasForeignKey(x => x.ClientId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasIndex(x => new { x.ProductId, x.ChainId, x.ClientId, x.IsActive });
         }
     }
 }
