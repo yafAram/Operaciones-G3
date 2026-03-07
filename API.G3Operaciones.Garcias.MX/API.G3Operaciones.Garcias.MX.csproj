@@ -103,8 +103,6 @@
   <ItemGroup>
     <Folder Include="Application\Auth\Services\" />
     <Folder Include="Application\Common\Interfaces\" />
-    <Folder Include="Application\Orders\Interfaces\" />
-    <Folder Include="Application\Orders\Services\" />
     <Folder Include="Application\Reports\DTOs\" />
     <Folder Include="Application\Reports\Interfaces\" />
     <Folder Include="Application\Reports\Services\" />

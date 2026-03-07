@@ -1,0 +1,13 @@
+﻿namespace API.G3Operaciones.Garcias.MX.Application.Common.Dto
+{
+    public class PagedResultDto<T>
+    {
+        public List<T> Items { get; set; } = new();
+
+        public int TotalCount { get; set; }
+
+        public int PageNumber { get; set; }
+
+        public int PageSize { get; set; }
+    }
+}
