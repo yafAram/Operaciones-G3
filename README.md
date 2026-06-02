@@ -1,4 +1,4 @@
-🚀 G3Operaciones API
+******🚀 G3Operaciones API
 
 API backend para la plataforma G3Operaciones, desarrollada con ASP.NET Core (.NET 10), SQL Server 2022 y basada en Clean Architecture.
 
@@ -490,4 +490,4 @@ Optimización de consultas
 
 Base sólida primero.
 Escalabilidad después.
-Control del dominio siempre.
+Control del dominio siempre.******
