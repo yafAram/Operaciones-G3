@@ -1,493 +1,605 @@
-******🚀 G3Operaciones API
+# G3Operaciones API
 
-API backend para la plataforma G3Operaciones, desarrollada con ASP.NET Core (.NET 10), SQL Server 2022 y basada en Clean Architecture.
+<div align="center">
 
-El sistema está orientado a la gestión operativa integral de:
+### API backend para gestión operativa de pedidos, usuarios, clientes, inventario, precios y órdenes
 
-Usuarios y roles
+![C#](https://img.shields.io/badge/C%23-Backend-68217A?style=for-the-badge\&logo=csharp\&logoColor=white)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-.NET_10-512BD4?style=for-the-badge\&logo=dotnet\&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL_Server-2022-CC2927?style=for-the-badge\&logo=microsoftsqlserver\&logoColor=white)
+![Entity Framework](https://img.shields.io/badge/Entity_Framework_Core-ORM-512BD4?style=for-the-badge\&logo=dotnet\&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=for-the-badge\&logo=jsonwebtokens\&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge\&logo=docker\&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=for-the-badge\&logo=swagger\&logoColor=000)
+
+</div>
+
+---
+
+## Descripción general
+
+**G3Operaciones API** es una API backend desarrollada con **ASP.NET Core**, **C#**, **SQL Server 2022** y **Entity Framework Core**, orientada a la gestión operativa de pedidos, inventarios, clientes, productos, precios, usuarios y roles.
+
+El proyecto fue construido como un MVP backend para una plataforma de operaciones empresariales, aplicando principios de **Clean Architecture**, separación por capas, autenticación con **JWT**, autorización basada en roles y documentación de endpoints mediante **Swagger/OpenAPI**.
+
+El objetivo principal es proporcionar una base backend mantenible, segura y preparada para crecer hacia módulos operativos más avanzados como dashboards, integración móvil, generación de reportes y trazabilidad completa de pedidos.
+
+---
+
+## Objetivo del proyecto
+
+El sistema busca centralizar y controlar procesos operativos relacionados con:
+
+* Gestión de usuarios y roles.
+* Administración de clientes y cadenas comerciales.
+* Registro y control de productos.
+* Gestión de almacenes e inventarios.
+* Configuración de precios.
+* Creación, seguimiento y modificación de pedidos.
+* Historial de cambios y trazabilidad operativa.
+* Seguridad mediante autenticación y autorización.
 
-Clientes y cadenas
+---
 
-Productos
+## Stack tecnológico
 
-Inventarios y almacenes
+### Backend
+
+* C#
+* ASP.NET Core
+* .NET 10
+* Entity Framework Core
+* APIs REST
+* Swagger / OpenAPI
 
-Configuración de precios
+### Base de datos
 
-Gestión avanzada de pedidos (Orders)
+* SQL Server 2022
+* Migraciones con Entity Framework Core
+* Fluent API
+* Relaciones explícitas
+* Índices estratégicos
+* Conversión de enums
 
-El proyecto prioriza control del dominio, trazabilidad, seguridad, mantenibilidad y escalabilidad real.
+### Seguridad
 
-📌 Estado actual del proyecto
+* JWT Authentication
+* Role-Based Access Control
+* Claims personalizados
+* Políticas de autorización por rol
+* Middleware global de excepciones
 
-🟢 Fase actual: Núcleo del sistema completamente estructurado y módulos principales implementados.
+### Infraestructura y herramientas
 
-Actualmente el proyecto cuenta con:
+* Docker
+* Docker Compose
+* Git
+* GitHub
+* Visual Studio
+* Postman
+* SQL Server Management Studio
 
-Arquitectura limpia aplicada correctamente
+---
 
-Separación por capas (Domain, Application, Infrastructure, API)
+## Arquitectura
 
-SQL Server 2022 configurado
+El proyecto aplica una estructura basada en **Clean Architecture**, organizada por capas para separar responsabilidades y mantener el dominio independiente de detalles técnicos.
 
-Docker para entorno reproducible
+```txt
+API.G3Operaciones.Garcias.MX/
+│
+├── Controllers/
+│   └── Endpoints REST y validaciones de entrada
+│
+├── Domain/
+│   └── Entities/
+│       ├── Users/
+│       ├── Clients/
+│       ├── Products/
+│       ├── Inventory/
+│       ├── Pricing/
+│       └── Orders/
+│
+├── Application/
+│   ├── DTOs/
+│   ├── Interfaces/
+│   ├── Common/
+│   └── Casos de uso y reglas de aplicación
+│
+├── Infrastructure/
+│   ├── Persistence/
+│   ├── Configurations/
+│   └── Implementación de persistencia e integraciones
+│
+├── Middlewares/
+│   └── Manejo global de excepciones
+│
+├── Migrations/
+│   └── Migraciones de Entity Framework Core
+│
+├── Program.cs
+└── appsettings.json
+```
 
-Entity Framework Core con Fluent API por entidad
+---
 
-Migraciones estructurales listas
+## Responsabilidad de cada capa
 
-Seguridad con JWT implementada
+### Domain
 
-Políticas de autorización por rol
+Contiene la lógica central del negocio:
 
-Middleware global de manejo de excepciones
+* Entidades.
+* Enums.
+* Reglas de negocio.
+* Modelos principales del dominio.
 
-Swagger con autenticación configurada
+Esta capa no depende directamente de frameworks externos.
 
-Módulo completo de Orders integrado al dominio
+### Application
 
-El sistema ya no está en fase inicial.
-Cuenta con una base sólida preparada para crecimiento empresarial.
+Orquesta los casos de uso del sistema:
 
-🧱 Arquitectura
+* DTOs.
+* Interfaces.
+* Validaciones.
+* Excepciones personalizadas.
+* Contratos entre dominio e infraestructura.
 
-Se implementa Clean Architecture, organizada por capas dentro de un único proyecto para mantener simplicidad sin perder buenas prácticas.
+### Infrastructure
 
-Capas principales
-Domain
+Implementa detalles técnicos:
 
-Contiene:
+* Entity Framework Core.
+* DbContext.
+* Configuraciones Fluent API.
+* Persistencia.
+* Implementaciones de repositorios o servicios externos.
 
-Entidades
+### API / Controllers
 
-Enums
+Expone la funcionalidad mediante endpoints REST:
 
-Reglas de negocio
+* Controladores.
+* Validaciones de entrada.
+* Respuestas HTTP.
+* Autenticación y autorización.
+* Documentación con Swagger.
 
-Lógica central del dominio
+---
 
-No depende de frameworks externos.
+## Módulos implementados
 
-Application
+### Users
 
-Contiene:
+Módulo encargado de la gestión de usuarios, roles y credenciales.
 
-DTOs
+Incluye:
 
-Interfaces
+* Registro y administración de usuarios.
+* Manejo de credenciales.
+* Asignación de roles.
+* Base para autenticación y autorización.
+* Auditoría de acciones.
 
-Casos de uso
+---
 
-Validaciones
+### Clients
 
-Excepciones personalizadas
+Módulo orientado a la administración de clientes y cadenas comerciales.
 
-Orquesta el comportamiento del dominio.
+Incluye:
 
-Infrastructure
+* Clientes individuales.
+* Cadenas comerciales.
+* Relación con pedidos.
+* Asociación con operadores y sucursales.
 
-Contiene:
+---
 
-Entity Framework Core
+### Products
 
-Configuraciones Fluent API
+Módulo encargado de la gestión de productos.
 
-DbContext
+Incluye:
 
-Persistencia
+* Identificador de producto.
+* Nombre.
+* Estado activo/inactivo.
+* Preparación para integración con inventarios y precios.
 
-Integraciones técnicas
+---
 
-Implementa las interfaces definidas en Application.
+### Inventory
 
-API (Controllers)
+Módulo para control de existencias y almacenes.
 
-Contiene:
+Incluye:
 
-Endpoints REST
+* Almacenes.
+* Existencias por producto.
+* Movimientos históricos de inventario.
+* Registro de entradas y salidas.
+* Base para validaciones previas a pedidos.
 
-Autorización
+---
 
-Validaciones de entrada
+### Pricing
 
-Respuestas HTTP
+Módulo para configuración flexible de precios.
 
-Integración con JWT
+Incluye:
 
-📁 Estructura del proyecto
+* Precio general.
+* Precio por cliente.
+* Precio por cadena.
+* Preparación para reglas de precios dinámicas.
 
-G3Operaciones.API
+---
 
-Controllers
+### Orders
 
-Domain
+Módulo principal del sistema, enfocado en la creación, seguimiento y trazabilidad de pedidos.
 
-Entities
+Incluye:
 
-Users
+* Creación de pedidos.
+* Asignación de operador.
+* Asociación con sucursal o cadena.
+* Estados del pedido.
+* Total del pedido.
+* Coordenadas de ubicación.
+* Snapshot de nombre de sucursal.
+* Fecha de creación y cierre.
+* Items del pedido.
+* Historial de modificaciones.
+* Registro de llamadas operativas.
+* Configuración de horarios y ventanas de atención.
 
-Clients
+---
 
-Products
+## Características técnicas destacadas
 
-Inventory
+* Arquitectura limpia aplicada por capas.
+* API REST desarrollada con ASP.NET Core.
+* Persistencia con Entity Framework Core.
+* Configuración de entidades mediante Fluent API.
+* Migraciones estructurales.
+* SQL Server 2022 como motor de base de datos.
+* Docker para entorno reproducible.
+* JWT personalizado para autenticación.
+* Autorización basada en políticas por rol.
+* Middleware global para manejo de excepciones.
+* Swagger configurado para pruebas de endpoints.
+* Módulo de pedidos con historial y trazabilidad.
+* Preparado para testing con xUnit, Moq y WebApplicationFactory.
 
-Pricing
+---
 
-Orders
+## Flujo general del sistema
 
-Application
+```txt
+Usuario inicia sesión
+        ↓
+Se genera token JWT
+        ↓
+Se valida acceso según rol
+        ↓
+El operador consulta asignaciones activas
+        ↓
+Se valida día o ventana permitida
+        ↓
+Se crea un pedido
+        ↓
+Se agregan productos al pedido
+        ↓
+Se registra historial de cambios
+        ↓
+El pedido puede modificarse, cerrarse o cancelarse
+        ↓
+Se conserva trazabilidad operativa
+```
 
-DTOs
+---
 
-Interfaces
+## Base de datos
 
-Common
+El proyecto utiliza **SQL Server 2022** y **Entity Framework Core**.
 
-Infrastructure
+Características implementadas:
 
-Persistence
+* DbContext centralizado.
+* Configuración individual por entidad.
+* Migraciones estructurales.
+* Relaciones explícitas.
+* Índices estratégicos.
+* Precisión decimal controlada.
+* Conversión de enums.
+* Eliminación en cascada donde corresponde.
 
-Configurations
+---
 
-ApplicationDbContext.cs
+## Seguridad
 
-Middlewares
+La seguridad se implementa mediante **JWT** y políticas de autorización por rol.
 
-Filters
+### Autenticación
 
-Configurations
+* Generación de token JWT.
+* Expiración configurable.
+* Claims personalizados.
+* Validación de credenciales.
+* Protección de endpoints privados.
 
-Program.cs
+### Autorización
 
-appsettings.json
-
-🗄️ Base de datos
-Motor
-
-SQL Server 2022 Developer Edition
-
-ORM
-
-Entity Framework Core
-
-Características implementadas
-
-DbContext centralizado
-
-Configuración individual por entidad con IEntityTypeConfiguration
-
-Conversión de enums a int
-
-Índices estratégicos
-
-Relaciones definidas explícitamente
-
-Precisión decimal controlada
-
-Eliminación en cascada donde corresponde
-
-Migraciones estructurales listas
-
-No se utiliza EnsureCreated() ni generación automática no controlada.
-
-🐳 Docker
-
-SQL Server corre dentro de contenedor Docker para garantizar:
-
-Entornos reproducibles
-
-Onboarding rápido
-
-Aislamiento del entorno
-
-Persistencia mediante volúmenes
-
-Levantar base de datos
-docker compose up -d
-
-Puerto expuesto: 1433
-
-🔐 Seguridad
-Autenticación
-
-Se implementa autenticación mediante:
-
-JWT personalizado
-
-Expiración configurable
-
-Claims personalizados
-
-No se utiliza ASP.NET Identity.
-
-Autorización
-
-Basada en políticas por rol.
+* Acceso basado en roles.
+* Políticas centralizadas.
+* Uso de atributos de autorización en controladores.
 
 Ejemplo:
 
+```csharp
 [Authorize(Policy = "Administrador")]
+```
 
-Las políticas están centralizadas y configuradas en el pipeline.
+---
 
-📦 Módulos Implementados
-👤 USERS
+## Docker
 
-Permite:
+El proyecto está preparado para trabajar con SQL Server en contenedor mediante Docker.
 
-Registro y gestión de usuarios
+Beneficios:
 
-Gestión de roles
+* Entorno reproducible.
+* Onboarding rápido.
+* Aislamiento de dependencias.
+* Persistencia mediante volúmenes.
+* Configuración local más limpia.
 
-Manejo de credenciales
+Comando sugerido:
 
-Auditoría de acciones
+```bash
+docker compose up -d
+```
 
-Proporciona la base para autenticación y autorización.
+---
 
-🏢 CLIENTS
+## Requisitos previos
 
-Incluye:
+Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
-Clientes individuales
+* .NET SDK 10
+* Docker Desktop
+* SQL Server Management Studio, opcional
+* Visual Studio 2022 o VS Code
+* Git
+* Postman, opcional
 
-Cadenas comerciales
+---
 
-Permite asociar pedidos y operadores a sucursales o cadenas específicas.
+## Instalación y ejecución
 
-📦 PRODUCTS
+### 1. Clonar el repositorio
 
-Gestión de productos con:
+```bash
+git clone https://github.com/yafAram/Operaciones-G3.git
+```
 
-Identificador
+### 2. Entrar al proyecto
 
-Nombre
+```bash
+cd Operaciones-G3/API.G3Operaciones.Garcias.MX
+```
 
-Estado activo/inactivo
+### 3. Restaurar dependencias
 
-Preparado para integración con inventarios y precios dinámicos.
+```bash
+dotnet restore
+```
 
-🏬 INVENTORY
+### 4. Levantar base de datos con Docker
 
-Incluye:
+```bash
+docker compose up -d
+```
 
-Warehouses (almacenes)
+> Si el archivo `docker-compose.yml` está en otra carpeta, ejecuta el comando desde la ubicación correspondiente.
 
-Inventories (existencias por producto)
+### 5. Configurar cadena de conexión
 
-InventoryMovements (movimientos históricos)
+Configura tu `appsettings.Development.json` o variables de entorno.
 
-Permite:
+Ejemplo:
 
-Control por almacén
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost,1433;Database=G3OperacionesDb;User Id=sa;Password=TuPasswordSeguro123;TrustServerCertificate=True;"
+  }
+}
+```
 
-Registro de entradas y salidas
+> No subas credenciales reales al repositorio.
 
-Base para validación previa a pedidos
+### 6. Aplicar migraciones
 
-💰 PRICING
-
-Configuración flexible de precios:
-
-Precio general
-
-Precio por cliente
-
-Precio por cadena
-
-Diseñado para expansión futura con reglas dinámicas.
-
-📦 ORDERS (Módulo Completo)
-
-Este es uno de los módulos más robustos del sistema.
-
-Entidades principales
-Order
-
-Operador asignado
-
-Sucursal o cadena
-
-Estado
-
-Total
-
-Coordenadas (latitud/longitud)
-
-Snapshot del nombre de sucursal
-
-Fecha creación
-
-Fecha cierre
-
-OrderItem
-
-Producto
-
-Cantidad
-
-Precio unitario
-
-Subtotal
-
-Snapshot del nombre del producto
-
-OrderHistory
-
-Permite trazabilidad completa:
-
-Usuario que realizó el cambio
-
-Qué cambió
-
-Valor anterior
-
-Valor nuevo
-
-Fecha y hora
-
-OrderCallLog
-
-Registro operativo de llamadas:
-
-Resultado de llamada
-
-Fecha programada (si aplica)
-
-Notas
-
-OperatorAssignment
-
-Controla:
-
-Qué operador atiende qué sucursal o cadena
-
-Día asignado
-
-Activación o desactivación
-
-Ventana de tiempo permitida
-
-OrderScheduleConfiguration
-
-Define:
-
-Días de levantamiento de pedidos
-
-Días de entrega
-
-Ventanas horarias
-
-Configuración activa/inactiva
-
-Características del módulo Orders
-
-Conversión de enums
-
-Índices optimizados
-
-Historial completo de modificaciones
-
-Base para control de ventanas de 38 horas
-
-Preparado para integración con generación de PDF y rutas
-
-⚙️ Flujo General del Sistema
-
-Usuario inicia sesión
-
-Se genera JWT
-
-Se valida acceso por rol
-
-Operador consulta asignaciones activas
-
-Se valida día permitido
-
-Se genera pedido
-
-Se registran items
-
-Se registra historial
-
-Se pueden modificar pedidos con trazabilidad
-
-Se puede cancelar (desactivar) pedido
-
-Se conserva historial completo
-
-🔍 Swagger
-
-Disponible en entorno de desarrollo.
-
-Incluye:
-
-Documentación automática
-
-Soporte para autenticación JWT
-
-Pruebas directas de endpoints
-
-🧪 Testing
-
-Preparado para:
-
-xUnit
-
-Moq
-
-WebApplicationFactory
-
-Enfoque en:
-
-Reglas de negocio
-
-Seguridad
-
-Validaciones
-
-Casos críticos del dominio
-
-⚙️ Ejecución del proyecto
-Requisitos
-
-.NET SDK 10
-
-Docker Desktop
-
-SQL Server container activo
-
-Ejecutar API
-dotnet run
-Crear migración
-dotnet ef migrations add NombreMigracion
-Aplicar migraciones
+```bash
 dotnet ef database update
-📈 Estado actual del sistema
+```
 
-El proyecto evolucionó de:
+### 7. Ejecutar la API
 
-Base técnica inicial
-→ Arquitectura estructurada
-→ Implementación de módulos funcionales
-→ Seguridad completa
-→ Módulo Orders avanzado
+```bash
+dotnet run
+```
 
-Actualmente se encuentra preparado para:
+### 8. Abrir Swagger
 
-Desarrollo frontend
+```txt
+https://localhost:PUERTO/swagger
+```
 
-Dashboards operativos
+---
 
-Integración móvil
+## Endpoints principales
 
-Escalamiento empresarial
+> Los endpoints exactos pueden variar según los controladores implementados.
 
-Optimización de consultas
+### Autenticación y usuarios
 
-🧠 Principio rector
+```http
+POST /api/auth/login
+POST /api/users
+GET  /api/users
+GET  /api/users/{id}
+PUT  /api/users/{id}
+```
 
-Base sólida primero.
-Escalabilidad después.
-Control del dominio siempre.******
+### Clientes
+
+```http
+GET  /api/clients
+POST /api/clients
+GET  /api/clients/{id}
+PUT  /api/clients/{id}
+```
+
+### Productos
+
+```http
+GET  /api/products
+POST /api/products
+GET  /api/products/{id}
+PUT  /api/products/{id}
+```
+
+### Inventario
+
+```http
+GET  /api/warehouses
+POST /api/warehouses
+GET  /api/inventory
+POST /api/inventory-movements
+```
+
+### Pedidos
+
+```http
+GET  /api/orders
+POST /api/orders
+GET  /api/orders/{id}
+PUT  /api/orders/{id}
+POST /api/orders/{id}/items
+POST /api/orders/{id}/cancel
+```
+
+---
+
+## Testing
+
+El proyecto está preparado para incorporar pruebas con:
+
+* xUnit.
+* Moq.
+* WebApplicationFactory.
+* Pruebas de reglas de negocio.
+* Pruebas de seguridad.
+* Pruebas de validaciones.
+* Pruebas de casos críticos del dominio.
+
+Comando sugerido cuando exista el proyecto de pruebas:
+
+```bash
+dotnet test
+```
+
+---
+
+## Estado del proyecto
+
+Estado actual: **MVP backend en desarrollo avanzado**.
+
+El proyecto cuenta con:
+
+* Núcleo estructurado.
+* Separación por capas.
+* Base de datos configurada.
+* Migraciones.
+* Seguridad con JWT.
+* Políticas por rol.
+* Swagger.
+* Módulos principales del dominio.
+* Módulo Orders con trazabilidad operativa.
+
+---
+
+## Próximas mejoras
+
+* Agregar proyecto de pruebas automatizadas.
+* Documentar endpoints con ejemplos de request/response.
+* Agregar seeders para datos iniciales.
+* Implementar logging estructurado.
+* Agregar manejo avanzado de auditoría.
+* Preparar despliegue en entorno cloud.
+* Crear dashboard frontend.
+* Integrar generación de PDF para pedidos.
+* Optimizar consultas críticas.
+* Agregar paginación, filtros y ordenamiento en endpoints principales.
+
+---
+
+## Buenas prácticas aplicadas
+
+* Separación por capas.
+* Dominio independiente.
+* DTOs para entrada y salida de datos.
+* Configuración Fluent API.
+* Middleware global de errores.
+* Autenticación con JWT.
+* Autorización por roles.
+* Uso de migraciones.
+* Documentación con Swagger.
+* Configuración reproducible con Docker.
+
+---
+
+## Notas para revisión técnica
+
+Este proyecto demuestra práctica en:
+
+* Desarrollo backend con ASP.NET Core.
+* Diseño de APIs REST.
+* Modelado de dominio.
+* Entity Framework Core.
+* SQL Server.
+* Seguridad con JWT.
+* Autorización basada en roles.
+* Clean Architecture.
+* Docker.
+* Documentación técnica.
+
+---
+
+## Autor
+
+**Yafte Aram Mercado Meza**
+Junior Backend Developer
+
+* GitHub: [github.com/yafAram](https://github.com/yafAram)
+* Email: [yaftearam34@gmail.com](mailto:yaftearam34@gmail.com)
+
+
+---
+
+## Licencia
+
+Este proyecto fue desarrollado como MVP académico/profesional para fines de aprendizaje, práctica técnica y demostración de habilidades backend.
+
+---
+
+<div align="center">
+
+### Base sólida primero. Escalabilidad después. Control del dominio siempre.
+
+</div>
