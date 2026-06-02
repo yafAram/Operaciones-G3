@@ -51,12 +51,12 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
             return Ok(new { message = "Usuario actualizado correctamente" });
         }
 
-        // Desactivar usuario
-        [HttpPatch("{id}/deactivate")]
-        public async Task<IActionResult> DeactivateUser(Guid id)
+        // Desactivar/Activar usuario
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> ChangeStatus(Guid id, [FromQuery] bool activate)
         {
-            await _commandService.DeactivateAsync(id);
-            return Ok(new { message = "Usuario desactivado correctamente" });
+            await _commandService.ChangeStatusAsync(id, activate);
+            return NoContent();
         }
 
         // Recuperacion de Contraseña(user)

@@ -60,19 +60,12 @@ namespace API.G3Operaciones.Garcias.MX.Application.Users.Services
             }
 
             // Auditoría
-            Track("FirstName", user.FirstName, dto.FirstName);
-            Track("LastName", user.LastName, dto.LastName);
+            Track("FullName", user.FirstName, dto.FullName);
             Track("PhoneNumber", user.PhoneNumber, dto.PhoneNumber);
-            Track("BirthDate", user.BirthDate.ToString(), dto.BirthDate.ToString());
 
             // Aplicar cambios usando método del dominio
-            user.UpdatePersonalInfo(dto.FirstName, dto.LastName, dto.PhoneNumber);
+            user.UpdatePersonalInfo(dto.FullName, dto.PhoneNumber);
 
-            // BirthDate como es private set, necesitas método en entidad
-            if (user.BirthDate != dto.BirthDate)
-            {
-                user.ChangeBirthDate(dto.BirthDate);
-            }
 
             _context.AuditLogs.AddRange(audits);
 
@@ -80,17 +73,22 @@ namespace API.G3Operaciones.Garcias.MX.Application.Users.Services
         }
 
 
-        public async Task DeactivateAsync(Guid userId)
+
+        public async Task ChangeStatusAsync(Guid userId, bool activate)
         {
             var user = await _context.Set<User>().FindAsync(userId);
 
             if (user == null)
-                throw new Exception("Usuario no encontrado");
+                throw new Exception("Rol no encontrado");
 
-            user.Deactivate();
+            if (activate)
+                user.Activate();
+            else
+                user.Deactivate();
 
             await _context.SaveChangesAsync();
         }
+
 
         public async Task<string> ResetPasswordAsync(Guid userId)
         {

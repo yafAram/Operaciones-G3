@@ -6,8 +6,12 @@ using API.G3Operaciones.Garcias.MX.Application.Clients.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Clients.Services;
 using API.G3Operaciones.Garcias.MX.Application.Common.Mappings;
 using API.G3Operaciones.Garcias.MX.Application.Common.Security;
+using API.G3Operaciones.Garcias.MX.Application.Delivery.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Delivery.Services;
 using API.G3Operaciones.Garcias.MX.Application.Inventory.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Inventory.Services;
+using API.G3Operaciones.Garcias.MX.Application.Orders.Interfaces;
+using API.G3Operaciones.Garcias.MX.Application.Orders.Services;
 using API.G3Operaciones.Garcias.MX.Application.Pricing.Interfaces;
 using API.G3Operaciones.Garcias.MX.Application.Pricing.Services;
 using API.G3Operaciones.Garcias.MX.Application.Products.Interfaces;
@@ -54,6 +58,15 @@ builder.Services.AddScoped<IChainService, ChainService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IWarehouseService, WarehouseService>();
 builder.Services.AddScoped<IPriceConfigurationService, PriceConfigurationService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<IPdfTicketService, PdfTicketService>();
+builder.Services.AddScoped<IDeliveryService, DeliveryService>();
+builder.Services.AddScoped<IRouteOptimizationService, RouteOptimizationService>();
+builder.Services.AddScoped<IGoogleMapsService, GoogleMapsService>();
+builder.Services.AddScoped<IOrderStatusUpdater, OrderService>();
+builder.Services.AddScoped<IOperatorAssignmentService, OrderService>();
+
 
 
 
@@ -125,6 +138,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 //        });
 //    };
 //});
+
+
 
 
 

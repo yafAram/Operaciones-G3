@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("API.G3Operaciones.Garcias.MX")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd7de4878c5b71649bfc28c8385af53f740ab5e5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c0bb4bcf81139f0277501b785775d81cc2d47f7")]
 [assembly: System.Reflection.AssemblyProductAttribute("API.G3Operaciones.Garcias.MX")]
 [assembly: System.Reflection.AssemblyTitleAttribute("API.G3Operaciones.Garcias.MX")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "d/hFOT09sFQ=",
+  "dgSpecHash": "Z+4ZJeTgYA8=",
   "success": true,
   "projectFilePath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
   "expectedPackageFiles": [
@@ -128,6 +128,18 @@
       "warningLevel": 1,
       "filePath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
       "libraryId": "Microsoft.Extensions.Configuration",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "El paquete \"AutoMapper\" 16.0.0 tiene una vulnerabilidad de gravedad alta conocida, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
+      "projectPath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\DELL\\Documents\\Estadia\\proyecto\\Desarrollo\\Backend\\Operaciones-G3\\API.G3Operaciones.Garcias.MX\\API.G3Operaciones.Garcias.MX.csproj",
+      "libraryId": "AutoMapper",
       "targetGraphs": [
         "net10.0"
       ]

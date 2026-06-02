@@ -27,6 +27,10 @@ namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory
             Quantity = 0;
             LastUpdated = DateTime.UtcNow;
         }
+        public void ChangeWarehouse(Guid newWarehouseId)
+        {
+            WarehouseId = newWarehouseId;
+        }
 
         public void Increase(decimal quantity)
         {

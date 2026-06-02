@@ -1,74 +1,89 @@
-﻿namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Orders
+﻿using API.G3Operaciones.Garcias.MX.Domain.Entities.Clients;
+using API.G3Operaciones.Garcias.MX.Domain.Entities.Enums;
+
+namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Orders
 {
     public class Order
     {
         public Guid Id { get; private set; }
-
         public Guid OperatorId { get; private set; }
 
-        public Guid? BranchId { get; private set; }
+        public Guid? ClientId { get; private set; }
+        public Client? Client { get; private set; }
+
         public Guid? ChainId { get; private set; }
+        public Chain? Chain { get; private set; }
 
-        public string BranchNameSnapshot { get; private set; } = string.Empty;
-
-        public DateTime CreatedAt { get; private set; }
-        public DateTime? ClosedAt { get; private set; }
-
+        public decimal TotalAmount { get; private set; }
         public OrderStatus Status { get; private set; }
 
-        public decimal Total { get; private set; }
-
-        public double? Latitude { get; private set; }
-        public double? Longitude { get; private set; }
-
-        public bool IsActive { get; private set; }
+        public string? TicketPath { get; private set; }
+        public DateTime CreatedAt { get; private set; }
 
         private readonly List<OrderItem> _items = new();
-        public IReadOnlyCollection<OrderItem> Items => _items;
+        public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
         protected Order() { }
 
-        public Order(
-            Guid operatorId,
-            Guid? branchId,
-            Guid? chainId,
-            string branchNameSnapshot,
-            double? latitude,
-            double? longitude)
+        public Order(Guid operatorId, Guid? clientId, Guid? chainId)
         {
             Id = Guid.NewGuid();
             OperatorId = operatorId;
-            BranchId = branchId;
+            ClientId = clientId;
             ChainId = chainId;
-            BranchNameSnapshot = branchNameSnapshot;
-            Latitude = latitude;
-            Longitude = longitude;
+            Status = OrderStatus.Pending;
             CreatedAt = DateTime.UtcNow;
-            Status = OrderStatus.Created;
-            IsActive = true;
         }
 
-        public void AddItem(OrderItem item)
+        public void AddItem(Guid productId, int quantity, decimal unitPrice)
         {
+            if (Status != OrderStatus.Pending)
+                throw new InvalidOperationException("No se pueden agregar productos a un pedido no pendiente.");
+
+            var item = new OrderItem(Id, productId, quantity, unitPrice);
             _items.Add(item);
-            RecalculateTotal();
+
+            CalculateTotal();
         }
 
-        public void Cancel()
+        public void CalculateTotal()
         {
+            TotalAmount = _items.Sum(i => i.SubTotal);
+        }
+
+        public void FinalizeOrder(string ticketPath)
+        {
+            if (!_items.Any())
+                throw new InvalidOperationException("No se puede finalizar un pedido sin productos.");
+
+            Status = OrderStatus.Finalized;
+            TicketPath = ticketPath;
+        }
+
+        public void CancelOrder()
+        {
+            if (Status == OrderStatus.Delivered)
+                throw new InvalidOperationException("No se puede cancelar un pedido entregado.");
+
             Status = OrderStatus.Cancelled;
-            IsActive = false;
         }
 
-        public void Close()
+        public void MarkAsDelivered()
         {
-            Status = OrderStatus.Completed;
-            ClosedAt = DateTime.UtcNow;
+            if (Status != OrderStatus.Finalized)
+                throw new InvalidOperationException("Solo pedidos finalizados pueden entregarse.");
+
+            Status = OrderStatus.Delivered;
         }
 
-        private void RecalculateTotal()
+
+
+        public void MarkAsIncident()
         {
-            Total = _items.Sum(x => x.SubTotal);
+            if (Status != OrderStatus.Finalized)
+                throw new InvalidOperationException("Solo pedidos finalizados pueden marcar incidencia.");
+
+            Status = OrderStatus.Incident;
         }
     }
 }

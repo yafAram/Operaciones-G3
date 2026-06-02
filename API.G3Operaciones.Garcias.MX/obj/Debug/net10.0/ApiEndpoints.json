@@ -48,6 +48,48 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.ChainsController",
+    "Method": "GetAll",
+    "RelativePath": "api/chains",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.ChainsController",
+    "Method": "GetById",
+    "RelativePath": "api/chains/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.ChainsController",
+    "Method": "Deactivate",
+    "RelativePath": "api/chains/{id}/deactivate",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.ClientsController",
     "Method": "Create",
     "RelativePath": "api/clients",
@@ -112,6 +154,22 @@
   },
   {
     "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.ClientsController",
+    "Method": "Activate",
+    "RelativePath": "api/clients/{id}/activate",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.ClientsController",
     "Method": "Deactivate",
     "RelativePath": "api/clients/{id}/deactivate",
     "HttpMethod": "PATCH",
@@ -127,6 +185,330 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "GetDrivers",
+    "RelativePath": "api/delivery/admin/drivers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "GetOverview",
+    "RelativePath": "api/delivery/admin/overview",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "CreatePlan",
+    "RelativePath": "api/delivery/admin/plans",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Delivery.DTOs.CreateDeliveryAssignmentPlanDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "GetPlans",
+    "RelativePath": "api/delivery/admin/plans",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "GetPlanDetail",
+    "RelativePath": "api/delivery/admin/plans/{planId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "planId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "DeletePlan",
+    "RelativePath": "api/delivery/admin/plans/{planId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "planId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "ConfirmPlan",
+    "RelativePath": "api/delivery/admin/plans/{planId}/confirm",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "planId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "AddTarget",
+    "RelativePath": "api/delivery/admin/plans/{planId}/targets",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "planId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Delivery.DTOs.AddDeliveryAssignmentTargetDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "GetRoutes",
+    "RelativePath": "api/delivery/admin/routes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "CancelRoute",
+    "RelativePath": "api/delivery/admin/routes/{planId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "planId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "ReassignDriver",
+    "RelativePath": "api/delivery/admin/routes/{planId}/reassign",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "planId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "GenerateRoute",
+    "RelativePath": "api/delivery/admin/routes/generate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Delivery.DTOs.GenerateRouteDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryAdminController",
+    "Method": "RemoveTarget",
+    "RelativePath": "api/delivery/admin/targets/{targetId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "targetId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryOperatorController",
+    "Method": "CompleteDelivery",
+    "RelativePath": "api/delivery/operator/delivery/complete",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Delivery.DTOs.CompleteDeliveryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryOperatorController",
+    "Method": "ReportIncident",
+    "RelativePath": "api/delivery/operator/delivery/incident",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Delivery.DTOs.ReportIncidentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryOperatorController",
+    "Method": "GenerateDeliveryTicket",
+    "RelativePath": "api/delivery/operator/delivery/ticket/{deliveryStopId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "deliveryStopId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryOperatorController",
+    "Method": "ConfirmPlan",
+    "RelativePath": "api/delivery/operator/plans/{planId}/confirm",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "planId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryOperatorController",
+    "Method": "GetCurrentRoute",
+    "RelativePath": "api/delivery/operator/route/current",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryOperatorController",
+    "Method": "GetRoutePreview",
+    "RelativePath": "api/delivery/operator/route/preview",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.DeliveryOperatorController",
+    "Method": "StartRoute",
+    "RelativePath": "api/delivery/operator/route/start",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Delivery.DTOs.StartRouteDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.HealthController",
     "Method": "CheckDatabase",
     "RelativePath": "api/health/db",
@@ -134,6 +516,202 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "CreateOrder",
+    "RelativePath": "api/Orders",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Orders.DTOs.CreateOrderDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "GetOrderDetails",
+    "RelativePath": "api/Orders/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "CancelOrder",
+    "RelativePath": "api/Orders/{id}/cancel",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "MarkAsDelivered",
+    "RelativePath": "api/Orders/{id}/deliver",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "EditOrder",
+    "RelativePath": "api/Orders/{id}/edit",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Orders.DTOs.EditOrderDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "MarkAsIncident",
+    "RelativePath": "api/Orders/{id}/incident",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "GetAdminDashboard",
+    "RelativePath": "api/Orders/dashboard/admin",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "GetOperatorDashboard",
+    "RelativePath": "api/Orders/dashboard/operator/{operatorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "operatorId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "GetGroupedOrders",
+    "RelativePath": "api/Orders/grouped",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "GetLogisticsView",
+    "RelativePath": "api/Orders/logistics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "AssignOperatorTargets",
+    "RelativePath": "api/Orders/operator-assignment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "API.G3Operaciones.Garcias.MX.Application.Orders.DTOs.AssignOperatorTargetsDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.OrdersController",
+    "Method": "GetOperatorAssignments",
+    "RelativePath": "api/Orders/operator-assignment/{operatorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "operatorId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -317,6 +895,11 @@
         "IsRequired": false
       },
       {
+        "Name": "WarehouseId",
+        "Type": "System.Nullable\u00601[[System.Guid, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
         "Name": "Image",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
@@ -354,6 +937,32 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.ProductController",
+    "Method": "Activate",
+    "RelativePath": "api/Product/Activate/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.ProductController",
+    "Method": "GetCards",
+    "RelativePath": "api/Product/cards",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -521,9 +1130,9 @@
   },
   {
     "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.UsersController",
-    "Method": "DeactivateUser",
-    "RelativePath": "api/users/{id}/deactivate",
-    "HttpMethod": "PATCH",
+    "Method": "ResetPassword",
+    "RelativePath": "api/users/{id}/reset-password",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -537,9 +1146,9 @@
   },
   {
     "ContainingType": "API.G3Operaciones.Garcias.MX.Controllers.UsersController",
-    "Method": "ResetPassword",
-    "RelativePath": "api/users/{id}/reset-password",
-    "HttpMethod": "POST",
+    "Method": "ChangeStatus",
+    "RelativePath": "api/users/{id}/status",
+    "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -547,6 +1156,11 @@
         "Name": "id",
         "Type": "System.Guid",
         "IsRequired": true
+      },
+      {
+        "Name": "activate",
+        "Type": "System.Boolean",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

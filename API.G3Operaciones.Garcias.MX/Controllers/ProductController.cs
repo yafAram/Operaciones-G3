@@ -8,7 +8,7 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Policy = "AdminOnly")]
+    // 🔥 ELIMINADO EL BLOQUEO A NIVEL DE CLASE AQUÍ
     public class ProductController : ControllerBase
     {
         private readonly IProductService _service;
@@ -18,70 +18,75 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
             _service = service;
         }
 
-        // ===============================
-        // CREATE
-        // ===============================
         [HttpPost]
+        [Consumes("multipart/form-data")]
+        [Authorize(Policy = "AdminOnly")] // Solo Admin crea
         public async Task<IActionResult> Create([FromForm] CreateProductDto dto)
         {
             var id = await _service.CreateAsync(dto);
             return Ok(id);
         }
 
-        // ===============================
-        // UPDATE
-        // ===============================
         [HttpPut("{id}")]
+        [Consumes("multipart/form-data")]
+        [Authorize(Policy = "AdminOnly")] // Solo Admin edita
         public async Task<IActionResult> Update(Guid id, [FromForm] UpdateProductDto dto)
         {
             await _service.UpdateAsync(id, dto);
             return NoContent();
         }
 
-        // ===============================
-        // DEACTIVATE
-        // ===============================
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Deactivate(Guid id)
         {
             await _service.DeactivateAsync(id);
             return NoContent();
         }
 
-        // ===============================
-        // GET BY ID
-        // ===============================
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpDelete("Activate/{id}")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> Activate(Guid id)
         {
-            var product = await _service.GetByIdAsync(id);
-            return Ok(product);
+            await _service.ActivateAsync(id);
+            return NoContent();
         }
 
-        // ===============================
-        // GET ALL
-        // ===============================
+        // 🔥 Permite a los operadores cargar su catálogo de productos
         [HttpGet]
+        [Authorize(Roles = "Administrador,Operador")]
         public async Task<IActionResult> GetAll()
         {
             var products = await _service.GetAllAsync();
             return Ok(products);
         }
 
-        // ===============================
-        // TOP PRODUCTS
-        // ===============================
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Operador")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var product = await _service.GetByIdAsync(id);
+            return Ok(product);
+        }
+
+        [HttpGet("cards")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> GetCards()
+        {
+            var result = await _service.GetCardsAsync();
+            return Ok(result);
+        }
+
         [HttpGet("top/{top}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> GetTop(int top)
         {
             var result = await _service.GetTopProductsAsync(top);
             return Ok(result);
         }
 
-        // ===============================
-        // AJUSTAR STOCK
-        // ===============================
         [HttpPost("stock/in")]
+        [Authorize(Policy = "AdminOnly")] // Movimientos manuales de stock solo Admin
         public async Task<IActionResult> IncreaseStock([FromBody] AdjustStockDto dto)
         {
             await _service.AdjustStockAsync(dto, MovementType.In);
@@ -89,6 +94,7 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
         }
 
         [HttpPost("stock/out")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DecreaseStock([FromBody] AdjustStockDto dto)
         {
             await _service.AdjustStockAsync(dto, MovementType.Out);

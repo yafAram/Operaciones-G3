@@ -39,16 +39,20 @@ namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Users
             Status = UserStatus.Active;
         }
 
-        public void UpdatePersonalInfo(string firstName, string lastName, string phoneNumber)
+        public void UpdatePersonalInfo(string FullName, string phoneNumber)
         {
-            FirstName = firstName;
-            LastName = lastName;
+            FirstName = FullName;
             PhoneNumber = phoneNumber;
         }
 
         public void Deactivate()
         {
             Status = UserStatus.Inactive;
+        }
+
+        public void Activate()
+        {
+            Status = UserStatus.Active;
         }
 
         public void ChangeRole(Guid roleId)

@@ -1,6 +1,6 @@
 ﻿using API.G3Operaciones.Garcias.MX.Domain.Entities;
-using API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Clients;
+using API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Orders;
 using API.G3Operaciones.Garcias.MX.Domain.Entities.Pricing;
@@ -53,15 +53,34 @@ namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence
         // ===============================
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
-        public DbSet<OrderHistory> OrderHistories => Set<OrderHistory>();
-        public DbSet<OrderCallLog> OrderCallLogs => Set<OrderCallLog>();
-        public DbSet<OperatorAssignment> OperatorAssignments => Set<OperatorAssignment>();
-        public DbSet<OrderScheduleConfiguration> OrderScheduleConfigurations => Set<OrderScheduleConfiguration>();
+
+
+        // ===============================
+        // DELIVERY
+        // ===============================
+
+        public DbSet<DeliveryPlan> DeliveryPlans => Set<DeliveryPlan>();
+        public DbSet<DeliveryStop> DeliveryStops => Set<DeliveryStop>();
+        public DbSet<DeliveryIncident> DeliveryIncidents => Set<DeliveryIncident>();
+        public DbSet<DeliveryAssignmentPlan> DeliveryAssignmentPlans { get; set; }
+        public DbSet<DeliveryAssignmentTarget> DeliveryAssignmentTargets { get; set; }
+        public DbSet<OperatorAssignmentPlan> OperatorAssignmentPlans { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+
+            modelBuilder.Model.GetEntityTypes()
+    .SelectMany(t => t.GetProperties())
+    .Where(p => p.Name == "OrderStatusSnapshot");
+
+            modelBuilder.Entity<AuditLog>(entity =>
+            {
+                entity.ToTable("AuditLogs");
+                entity.HasKey(e => e.Id);
+            });
             // Aplica automáticamente todas las configuraciones
             modelBuilder.ApplyConfigurationsFromAssembly(
                 typeof(ApplicationDbContext).Assembly);

@@ -1,7 +1,6 @@
 ﻿using API.G3Operaciones.Garcias.MX.Domain.Entities.Users;
 
-namespace API.G3Operaciones.Garcias.MX.Domain.Entities
-{
+
     namespace API.G3Operaciones.Garcias.MX.Domain.Entities
     {
         public class UserCredential
@@ -48,4 +47,4 @@ namespace API.G3Operaciones.Garcias.MX.Domain.Entities
         }
 
     }
-    }
+    

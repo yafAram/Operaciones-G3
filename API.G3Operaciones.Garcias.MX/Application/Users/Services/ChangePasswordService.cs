@@ -2,7 +2,6 @@
 using API.G3Operaciones.Garcias.MX.Application.Common.Security;
 using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
 using API.G3Operaciones.Garcias.MX.Domain.Entities;
-using API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities;
 using API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 

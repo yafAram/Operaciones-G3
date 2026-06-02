@@ -7,5 +7,9 @@
         public string Location { get; set; } = default!;
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
+
+
+        public List<WarehouseProductDto> Products { get; set; } = new();
+        public List<InventoryMovementDto> Movements { get; set; } = new();
     }
 }

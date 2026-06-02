@@ -1,39 +1,30 @@
-﻿namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Orders
+﻿using API.G3Operaciones.Garcias.MX.Domain.Entities.Products;
+
+namespace API.G3Operaciones.Garcias.MX.Domain.Entities.Orders
 {
     public class OrderItem
     {
         public Guid Id { get; private set; }
 
+        public Guid OrderId { get; private set; }
         public Guid ProductId { get; private set; }
 
-        public string ProductNameSnapshot { get; private set; } = string.Empty;
-
-        public decimal UnitPrice { get; private set; }
+        public Product? Product { get; private set; }
 
         public int Quantity { get; private set; }
-
+        public decimal UnitPrice { get; private set; }
         public decimal SubTotal { get; private set; }
 
         protected OrderItem() { }
 
-        public OrderItem(
-            Guid productId,
-            string productNameSnapshot,
-            decimal unitPrice,
-            int quantity)
+        public OrderItem(Guid orderId, Guid productId, int quantity, decimal unitPrice)
         {
             Id = Guid.NewGuid();
+            OrderId = orderId;
             ProductId = productId;
-            ProductNameSnapshot = productNameSnapshot;
+            Quantity = quantity;
             UnitPrice = unitPrice;
-            Quantity = quantity;
-            SubTotal = unitPrice * quantity;
-        }
-
-        public void UpdateQuantity(int quantity)
-        {
-            Quantity = quantity;
-            SubTotal = UnitPrice * quantity;
+            SubTotal = quantity * unitPrice;
         }
     }
 }

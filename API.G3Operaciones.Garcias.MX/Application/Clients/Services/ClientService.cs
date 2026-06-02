@@ -36,26 +36,57 @@ namespace API.G3Operaciones.Garcias.MX.Application.Clients.Services
 
         public async Task<ClientResponseDto> UpdateAsync(Guid id, UpdateClientDto dto)
         {
-            var client = await _context.Clients
-                .FirstOrDefaultAsync(c => c.Id == id)
-                ?? throw new ValidationException("Cliente no encontrado.");
+            try
+            {
+                var client = await _context.Clients
+                    .FirstOrDefaultAsync(c => c.Id == id);
 
-            await ClientValidator.ValidateCreateAsync(
-                new CreateClientDto
+                if (client == null)
+                    throw new ValidationException("Cliente no encontrado.");
+
+                // 🔥 Validación previa
+                await ClientValidator.ValidateCreateAsync(
+                    new CreateClientDto
+                    {
+                        Name = dto.Name,
+                        PhoneNumber = dto.PhoneNumber,
+                        Address = dto.Address,
+                        WorkSchedule = dto.WorkSchedule,
+                        ChainId = dto.ChainId,
+                        Extension = dto.Extension
+                    }, _context);
+
+                // 🔥 Validar GUID de ChainId (extra defensa)
+                if (dto.ChainId.HasValue)
                 {
-                    Name = dto.Name,
-                    PhoneNumber = dto.PhoneNumber,
-                    Address = dto.Address,
-                    WorkSchedule = dto.WorkSchedule,
-                    ChainId = dto.ChainId,
-                    Extension = dto.Extension
-                }, _context);
+                    var exists = await _context.Chains
+                        .AnyAsync(c => c.Id == dto.ChainId.Value);
 
-            _mapper.Map(dto, client);
+                    if (!exists)
+                        throw new ValidationException("La cadena seleccionada no existe.");
+                }
 
-            await _context.SaveChangesAsync();
+                _mapper.Map(dto, client);
 
-            return _mapper.Map<ClientResponseDto>(client);
+                await _context.SaveChangesAsync();
+
+                return _mapper.Map<ClientResponseDto>(client);
+            }
+            catch (ValidationException ex)
+            {
+                // ❗ Error controlado (validaciones)
+                throw new ValidationException($"Error de validación: {ex.Message}");
+            }
+            catch (DbUpdateException ex)
+            {
+                // ❗ Error de base de datos
+                throw new Exception("Error al actualizar en la base de datos.", ex);
+            }
+            catch (Exception ex)
+            {
+                // ❗ Error inesperado
+                throw new Exception("Error inesperado al actualizar el cliente.", ex);
+            }
         }
 
         public async Task<List<ClientResponseDto>> GetAllAsync()
@@ -72,6 +103,17 @@ namespace API.G3Operaciones.Garcias.MX.Application.Clients.Services
                 ?? throw new ValidationException("Cliente no encontrado.");
 
             client.Deactivate();
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ActivateAsync(Guid id)
+        {
+            var client = await _context.Clients
+                .FirstOrDefaultAsync(c => c.Id == id)
+                ?? throw new ValidationException("Cliente no encontrado.");
+
+            client.Activate();
 
             await _context.SaveChangesAsync();
         }

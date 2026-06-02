@@ -36,9 +36,7 @@ namespace API.G3Operaciones.Garcias.MX.Application.Common.Mappings
                     src.Longitude
                 ));
 
-            // Update NO debe mapear directo
-            CreateMap<UpdateClientDto, Client>()
-                .ForAllMembers(opt => opt.Ignore());
+            CreateMap<UpdateClientDto, Client>();
         }
     }
 }

@@ -22,36 +22,6 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities.UserCredential", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsLocked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("MustChangePassword")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserCredentials");
-                });
-
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -83,7 +53,7 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("AuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Chain", b =>
@@ -159,6 +129,178 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.HasIndex("ChainId");
 
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryAssignmentPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliveryUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsLocked")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryUserId", "DeliveryDate")
+                        .IsUnique();
+
+                    b.ToTable("DeliveryAssignmentPlans", (string)null);
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryAssignmentTarget", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ChainId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliveryAssignmentPlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChainId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("DeliveryAssignmentPlanId");
+
+                    b.ToTable("DeliveryAssignmentTargets", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Target_ChainOrClient", "[ChainId] IS NOT NULL OR [ClientId] IS NOT NULL");
+                        });
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryIncident", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliveryStopId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryStopId");
+
+                    b.ToTable("DeliveryIncidents", (string)null);
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliveryUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryUserId", "Date");
+
+                    b.ToTable("DeliveryPlans", (string)null);
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryStop", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ArrivedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliveryPlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FailureReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Latitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("decimal(9,6)");
+
+                    b.Property<decimal>("Longitude")
+                        .HasPrecision(9, 6)
+                        .HasColumnType("decimal(9,6)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RouteGroup")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sequence")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryPlanId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("DeliveryPlanId", "Sequence");
+
+                    b.ToTable("DeliveryStops", (string)null);
                 });
 
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory.Inventory", b =>
@@ -250,6 +392,117 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.ToTable("Warehouses");
                 });
 
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.OperatorAssignmentPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OperatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OperatorAssignmentPlans");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.OperatorAssignmentTarget", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ChainId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OperatorAssignmentPlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OperatorAssignmentPlanId");
+
+                    b.ToTable("OperatorAssignmentTarget");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ChainId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("OperatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TicketPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChainId");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Pricing.PriceConfiguration", b =>
                 {
                     b.Property<Guid>("Id")
@@ -337,6 +590,36 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.ToTable("Roles", (string)null);
                 });
 
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.UserCredential", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MustChangePassword")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCredentials");
+                });
+
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -374,17 +657,6 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.API.G3Operaciones.Garcias.MX.Domain.Entities.UserCredential", b =>
-                {
-                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Client", b =>
                 {
                     b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Chain", "Chain")
@@ -392,6 +664,37 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                         .HasForeignKey("ChainId");
 
                     b.Navigation("Chain");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryAssignmentTarget", b =>
+                {
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryAssignmentPlan", "DeliveryAssignmentPlan")
+                        .WithMany("Targets")
+                        .HasForeignKey("DeliveryAssignmentPlanId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DeliveryAssignmentPlan");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryIncident", b =>
+                {
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryStop", null)
+                        .WithMany()
+                        .HasForeignKey("DeliveryStopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryStop", b =>
+                {
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryPlan", "DeliveryPlan")
+                        .WithMany("Stops")
+                        .HasForeignKey("DeliveryPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DeliveryPlan");
                 });
 
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory.Inventory", b =>
@@ -432,6 +735,49 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.Navigation("Warehouse");
                 });
 
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.OperatorAssignmentTarget", b =>
+                {
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.OperatorAssignmentPlan", "Plan")
+                        .WithMany("Targets")
+                        .HasForeignKey("OperatorAssignmentPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plan");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.Order", b =>
+                {
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Chain", "Chain")
+                        .WithMany()
+                        .HasForeignKey("ChainId");
+
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+
+                    b.Navigation("Chain");
+
+                    b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.OrderItem", b =>
+                {
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.Order", null)
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Pricing.PriceConfiguration", b =>
                 {
                     b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Clients.Chain", "Chain")
@@ -456,6 +802,17 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.UserCredential", b =>
+                {
+                    b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Users.User", b =>
                 {
                     b.HasOne("API.G3Operaciones.Garcias.MX.Domain.Entities.Role", "Role")
@@ -472,11 +829,31 @@ namespace API.G3Operaciones.Garcias.MX.Migrations
                     b.Navigation("Clients");
                 });
 
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryAssignmentPlan", b =>
+                {
+                    b.Navigation("Targets");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Delivery.DeliveryPlan", b =>
+                {
+                    b.Navigation("Stops");
+                });
+
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Inventory.Warehouse", b =>
                 {
                     b.Navigation("Inventories");
 
                     b.Navigation("Movements");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.OperatorAssignmentPlan", b =>
+                {
+                    b.Navigation("Targets");
+                });
+
+            modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Orders.Order", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("API.G3Operaciones.Garcias.MX.Domain.Entities.Products.Product", b =>

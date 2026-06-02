@@ -10,6 +10,8 @@
         public Guid? ChainId { get; set; }
         public string? Extension { get; set; }
         public bool IsActive { get; set; }
+        public decimal? Latitude { get; private set; }
+        public decimal? Longitude { get; private set; }
         public DateTime CreatedAt { get; set; }
     }
 }

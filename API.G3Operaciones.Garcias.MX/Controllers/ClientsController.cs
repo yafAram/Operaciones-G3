@@ -65,6 +65,17 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
             return NoContent();
         }
 
+        // =====================================================
+        // Activar cliente
+        // =====================================================
+
+        [HttpPatch("{id:guid}/activate")]
+        public async Task<IActionResult> Activate(Guid id)
+        {
+            await _service.ActivateAsync(id);
+            return NoContent();
+        }
+
 
         //// =====================================================
         //// Obtener por Id

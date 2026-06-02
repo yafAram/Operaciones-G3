@@ -12,7 +12,10 @@ namespace API.G3Operaciones.Garcias.MX.Application.Products.Interfaces
         Task AdjustStockAsync(AdjustStockDto dto, MovementType movementType);
 
         Task<ProductResponseDto> GetByIdAsync(Guid id);
+        Task<ProductCardsDto> GetCardsAsync();
         Task<List<ProductResponseDto>> GetAllAsync();
+
+        Task ActivateAsync(Guid id);
         Task<List<ProductTopDto>> GetTopProductsAsync(int top);
     }
 }
