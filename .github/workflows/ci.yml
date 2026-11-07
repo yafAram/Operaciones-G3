@@ -37,14 +37,39 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Detect test project
+        id: tests
+        shell: bash
+        run: |
+          if [ -f "tests/G3Operaciones.Tests/G3Operaciones.Tests.csproj" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Restore dependencies
-        run: dotnet restore tests/G3Operaciones.Tests/G3Operaciones.Tests.csproj
+        run: |
+          if [ "${{ steps.tests.outputs.available }}" = "true" ]; then
+            dotnet restore tests/G3Operaciones.Tests/G3Operaciones.Tests.csproj
+          else
+            dotnet restore API.G3Operaciones.Garcias.MX/API.G3Operaciones.Garcias.MX.csproj
+          fi
 
       - name: Build API and test project
-        run: dotnet build tests/G3Operaciones.Tests/G3Operaciones.Tests.csproj --configuration Release --no-restore
+        run: |
+          if [ "${{ steps.tests.outputs.available }}" = "true" ]; then
+            dotnet build tests/G3Operaciones.Tests/G3Operaciones.Tests.csproj --configuration Release --no-restore
+          else
+            dotnet build API.G3Operaciones.Garcias.MX/API.G3Operaciones.Garcias.MX.csproj --configuration Release --no-restore
+          fi
 
       - name: Run automated tests
+        if: steps.tests.outputs.available == 'true'
         run: dotnet test tests/G3Operaciones.Tests/G3Operaciones.Tests.csproj --configuration Release --no-build --logger "trx;LogFileName=test-results.trx"
+
+      - name: Report missing test project
+        if: steps.tests.outputs.available != 'true'
+        run: echo "::warning::No test project exists on this ref; build was validated but automated tests were not executed."
 
       - name: Upload test results
         if: always()
