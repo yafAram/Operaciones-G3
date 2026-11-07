@@ -604,7 +604,8 @@ namespace API.G3Operaciones.Garcias.MX.Application.Orders.Services
         public async Task MarkStopAsDeliveredAsync(Guid stopId)
         {
             var stop = await _context.DeliveryStops
-                .FirstOrDefaultAsync(x => x.Id == stopId);
+                .FirstOrDefaultAsync(x => x.Id == stopId)
+                ?? throw new KeyNotFoundException("Parada de entrega no encontrada.");
 
             stop.MarkAsDelivered();
 
