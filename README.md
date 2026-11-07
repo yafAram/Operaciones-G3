@@ -243,6 +243,10 @@ Las pruebas críticas recomendadas cubren autorización por rol y propiedad, jer
 7. Documentar contratos HTTP con ejemplos generados o verificados desde los DTOs reales.
 8. Añadir observabilidad, rate limiting y políticas CORS por entorno.
 
+## Uso y derechos
+
+El repositorio no incluye actualmente un archivo de licencia. Su visibilidad pública permite consultar el código, pero no concede por sí sola derechos para reutilizar, distribuir o explotar código, marcas, información o materiales pertenecientes a terceros. Antes de publicar o reutilizar componentes vinculados a una organización, confirma que cuentas con autorización.
+
 ## Autor
 
 **Yafte Aram Mercado Meza** — Desarrollo Backend
