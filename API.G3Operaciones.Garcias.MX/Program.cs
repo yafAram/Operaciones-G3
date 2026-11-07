@@ -193,6 +193,8 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
+
     // Aplica migraciones pendientes
     if (dbContext.Database.GetPendingMigrations().Any())
     {
@@ -200,7 +202,7 @@ using (var scope = app.Services.CreateScope())
     }
 
     // Inicializa únicamente roles de referencia; no crea cuentas ni credenciales.
-    await DataSeeder.SeedAsync(dbContext);
+    await DataSeeder.SeedAsync(dbContext, passwordHasher, app.Configuration);
 }
 
 // =====================================================
