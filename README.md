@@ -1,605 +1,253 @@
-# G3Operaciones API
+# G3 Operaciones API
 
-<div align="center">
+API REST para administrar procesos operativos de una empresa: clientes y cadenas, usuarios y roles, productos, almacenes, inventario, precios, pedidos y planificación de entregas.
 
-### API backend para gestión operativa de pedidos, usuarios, clientes, inventario, precios y órdenes
+El repositorio presenta un MVP backend construido con C# y ASP.NET Core 10. Su objetivo es demostrar diseño de APIs, modelado de reglas de negocio, persistencia relacional, autenticación, autorización y trazabilidad.
 
-![C#](https://img.shields.io/badge/C%23-Backend-68217A?style=for-the-badge\&logo=csharp\&logoColor=white)
-![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-.NET_10-512BD4?style=for-the-badge\&logo=dotnet\&logoColor=white)
-![SQL Server](https://img.shields.io/badge/SQL_Server-2022-CC2927?style=for-the-badge\&logo=microsoftsqlserver\&logoColor=white)
-![Entity Framework](https://img.shields.io/badge/Entity_Framework_Core-ORM-512BD4?style=for-the-badge\&logo=dotnet\&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=for-the-badge\&logo=jsonwebtokens\&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge\&logo=docker\&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?style=for-the-badge\&logo=swagger\&logoColor=000)
+> **Estado:** MVP en desarrollo. La documentación describe el código disponible en el repositorio; las pruebas automatizadas, el despliegue y la infraestructura Docker se incorporarán cuando estén implementados y verificados.
 
-</div>
+## Índice
 
----
+- [Problema y alcance](#problema-y-alcance)
+- [Capacidades del sistema](#capacidades-del-sistema)
+- [Tecnologías](#tecnologías)
+- [Arquitectura y estructura](#arquitectura-y-estructura)
+- [Flujos de negocio](#flujos-de-negocio)
+- [Seguridad](#seguridad)
+- [Requisitos](#requisitos)
+- [Configuración local](#configuración-local)
+- [Base de datos y migraciones](#base-de-datos-y-migraciones)
+- [Ejecución y exploración de la API](#ejecución-y-exploración-de-la-api)
+- [Calidad y CI](#calidad-y-ci)
+- [Documentación adicional](#documentación-adicional)
+- [Limitaciones conocidas y próximos pasos](#limitaciones-conocidas-y-próximos-pasos)
 
-## Descripción general
+## Problema y alcance
 
-**G3Operaciones API** es una API backend desarrollada con **ASP.NET Core**, **C#**, **SQL Server 2022** y **Entity Framework Core**, orientada a la gestión operativa de pedidos, inventarios, clientes, productos, precios, usuarios y roles.
+La operación comercial requiere coordinar información que suele estar repartida entre usuarios, sucursales, catálogos, precios, inventarios, pedidos y entregas. G3 Operaciones propone centralizar esos procesos en una API con reglas de negocio explícitas y permisos según el rol.
 
-El proyecto fue construido como un MVP backend para una plataforma de operaciones empresariales, aplicando principios de **Clean Architecture**, separación por capas, autenticación con **JWT**, autorización basada en roles y documentación de endpoints mediante **Swagger/OpenAPI**.
+El alcance actual es un MVP backend. No debe interpretarse como un servicio productivo desplegado ni como un sistema con disponibilidad, monitoreo o pruebas de carga certificadas.
 
-El objetivo principal es proporcionar una base backend mantenible, segura y preparada para crecer hacia módulos operativos más avanzados como dashboards, integración móvil, generación de reportes y trazabilidad completa de pedidos.
+## Capacidades del sistema
 
----
+| Módulo | Responsabilidad |
+|---|---|
+| Usuarios y roles | Administración de usuarios, credenciales y permisos |
+| Clientes y cadenas | Registro de clientes, sucursales y agrupaciones comerciales |
+| Productos | Catálogo de productos |
+| Inventario | Almacenes, existencias y movimientos |
+| Precios | Configuraciones generales, por cliente y por cadena |
+| Pedidos | Creación, edición, cancelación, detalle e historial operativo |
+| Entregas | Planificación de rutas, paradas, confirmación e incidencias |
+| Auditoría | Registro de acciones relevantes del sistema |
 
-## Objetivo del proyecto
+### Reglas de negocio relevantes
 
-El sistema busca centralizar y controlar procesos operativos relacionados con:
+- La resolución de precios contempla configuraciones por cliente, cadena y precio general.
+- La creación de pedidos valida existencias y registra movimientos de inventario.
+- Los planes de entrega agrupan objetivos por repartidor y fecha.
+- Los endpoints están protegidos mediante autenticación JWT y autorización por roles.
 
-* Gestión de usuarios y roles.
-* Administración de clientes y cadenas comerciales.
-* Registro y control de productos.
-* Gestión de almacenes e inventarios.
-* Configuración de precios.
-* Creación, seguimiento y modificación de pedidos.
-* Historial de cambios y trazabilidad operativa.
-* Seguridad mediante autenticación y autorización.
+Estas reglas deben mantenerse cubiertas por pruebas de unidad e integración conforme se incorpore la suite de pruebas.
 
----
+## Tecnologías
 
-## Stack tecnológico
+- **Lenguaje:** C#
+- **Plataforma:** .NET 10 / ASP.NET Core
+- **Persistencia:** Entity Framework Core
+- **Base de datos:** SQL Server
+- **Autenticación:** JWT Bearer
+- **Validación:** FluentValidation
+- **Documentación de API:** Swagger / OpenAPI
+- **Control de versiones y automatización:** Git y GitHub Actions
 
-### Backend
+Las dependencias se declaran en `API.G3Operaciones.Garcias.MX/API.G3Operaciones.Garcias.MX.csproj`.
 
-* C#
-* ASP.NET Core
-* .NET 10
-* Entity Framework Core
-* APIs REST
-* Swagger / OpenAPI
+## Arquitectura y estructura
 
-### Base de datos
+El código se organiza como un monolito modular dentro de un único proyecto .NET. Separa dominio, casos de uso, infraestructura y exposición HTTP por carpetas. Es una base de organización por capas; todavía existen servicios de Application que dependen directamente de `ApplicationDbContext`, por lo que no se presenta como una Clean Architecture estricta con dependencias completamente invertidas.
 
-* SQL Server 2022
-* Migraciones con Entity Framework Core
-* Fluent API
-* Relaciones explícitas
-* Índices estratégicos
-* Conversión de enums
-
-### Seguridad
-
-* JWT Authentication
-* Role-Based Access Control
-* Claims personalizados
-* Políticas de autorización por rol
-* Middleware global de excepciones
-
-### Infraestructura y herramientas
-
-* Docker
-* Docker Compose
-* Git
-* GitHub
-* Visual Studio
-* Postman
-* SQL Server Management Studio
-
----
-
-## Arquitectura
-
-El proyecto aplica una estructura basada en **Clean Architecture**, organizada por capas para separar responsabilidades y mantener el dominio independiente de detalles técnicos.
-
-```txt
+```text
 API.G3Operaciones.Garcias.MX/
-│
-├── Controllers/
-│   └── Endpoints REST y validaciones de entrada
-│
-├── Domain/
-│   └── Entities/
-│       ├── Users/
-│       ├── Clients/
-│       ├── Products/
-│       ├── Inventory/
-│       ├── Pricing/
-│       └── Orders/
-│
-├── Application/
-│   ├── DTOs/
-│   ├── Interfaces/
-│   ├── Common/
-│   └── Casos de uso y reglas de aplicación
-│
-├── Infrastructure/
-│   ├── Persistence/
-│   ├── Configurations/
-│   └── Implementación de persistencia e integraciones
-│
-├── Middlewares/
-│   └── Manejo global de excepciones
-│
-├── Migrations/
-│   └── Migraciones de Entity Framework Core
-│
-├── Program.cs
-└── appsettings.json
+├── Controllers/       # Endpoints HTTP y autorización
+├── Application/       # DTOs, interfaces, validaciones y servicios de aplicación
+├── Domain/            # Entidades y enums del negocio
+├── Infrastructure/    # EF Core, configuración, seguridad e integraciones
+├── Middlewares/       # Manejo transversal de solicitudes y errores
+├── Migrations/        # Historial de cambios del esquema de EF Core
+├── Properties/
+├── Program.cs         # Composición de dependencias y pipeline HTTP
+└── appsettings*.json  # Configuración no sensible
 ```
 
----
+### Decisiones de diseño
 
-## Responsabilidad de cada capa
+- Un único proyecto ejecutable para reducir complejidad operativa en la etapa MVP.
+- Módulos agrupados por capacidad de negocio.
+- DTOs para separar contratos HTTP de entidades persistidas.
+- EF Core y migraciones para evolucionar el esquema.
+- JWT Bearer para identificar al usuario y políticas/roles para controlar el acceso.
 
-### Domain
+## Flujos de negocio
 
-Contiene la lógica central del negocio:
+### Creación de pedido
 
-* Entidades.
-* Enums.
-* Reglas de negocio.
-* Modelos principales del dominio.
+1. El cliente HTTP envía los datos del pedido.
+2. La API valida el modelo y las reglas de aplicación.
+3. Se consulta la disponibilidad de inventario.
+4. Se resuelve el precio aplicable al producto y al cliente/cadena.
+5. Se crea el pedido y sus partidas.
+6. Se registra la salida de inventario y la auditoría.
+7. Se confirma la transacción.
 
-Esta capa no depende directamente de frameworks externos.
+> La consistencia ante pedidos simultáneos y la preservación del almacén al editar o cancelar son puntos de revisión pendientes; no se consideran resueltos hasta añadir pruebas de concurrencia e integración.
 
-### Application
+### Planificación de entregas
 
-Orquesta los casos de uso del sistema:
+1. Se crea un plan asociado a un repartidor y una fecha.
+2. Se agregan clientes o cadenas como objetivos.
+3. Se resuelven las sucursales aplicables.
+4. Se confirma el plan y se trabaja con sus paradas.
+5. Se registran entregas e incidencias.
 
-* DTOs.
-* Interfaces.
-* Validaciones.
-* Excepciones personalizadas.
-* Contratos entre dominio e infraestructura.
-
-### Infrastructure
-
-Implementa detalles técnicos:
-
-* Entity Framework Core.
-* DbContext.
-* Configuraciones Fluent API.
-* Persistencia.
-* Implementaciones de repositorios o servicios externos.
-
-### API / Controllers
-
-Expone la funcionalidad mediante endpoints REST:
-
-* Controladores.
-* Validaciones de entrada.
-* Respuestas HTTP.
-* Autenticación y autorización.
-* Documentación con Swagger.
-
----
-
-## Módulos implementados
-
-### Users
-
-Módulo encargado de la gestión de usuarios, roles y credenciales.
-
-Incluye:
-
-* Registro y administración de usuarios.
-* Manejo de credenciales.
-* Asignación de roles.
-* Base para autenticación y autorización.
-* Auditoría de acciones.
-
----
-
-### Clients
-
-Módulo orientado a la administración de clientes y cadenas comerciales.
-
-Incluye:
-
-* Clientes individuales.
-* Cadenas comerciales.
-* Relación con pedidos.
-* Asociación con operadores y sucursales.
-
----
-
-### Products
-
-Módulo encargado de la gestión de productos.
-
-Incluye:
-
-* Identificador de producto.
-* Nombre.
-* Estado activo/inactivo.
-* Preparación para integración con inventarios y precios.
-
----
-
-### Inventory
-
-Módulo para control de existencias y almacenes.
-
-Incluye:
-
-* Almacenes.
-* Existencias por producto.
-* Movimientos históricos de inventario.
-* Registro de entradas y salidas.
-* Base para validaciones previas a pedidos.
-
----
-
-### Pricing
-
-Módulo para configuración flexible de precios.
-
-Incluye:
-
-* Precio general.
-* Precio por cliente.
-* Precio por cadena.
-* Preparación para reglas de precios dinámicas.
-
----
-
-### Orders
-
-Módulo principal del sistema, enfocado en la creación, seguimiento y trazabilidad de pedidos.
-
-Incluye:
-
-* Creación de pedidos.
-* Asignación de operador.
-* Asociación con sucursal o cadena.
-* Estados del pedido.
-* Total del pedido.
-* Coordenadas de ubicación.
-* Snapshot de nombre de sucursal.
-* Fecha de creación y cierre.
-* Items del pedido.
-* Historial de modificaciones.
-* Registro de llamadas operativas.
-* Configuración de horarios y ventanas de atención.
-
----
-
-## Características técnicas destacadas
-
-* Arquitectura limpia aplicada por capas.
-* API REST desarrollada con ASP.NET Core.
-* Persistencia con Entity Framework Core.
-* Configuración de entidades mediante Fluent API.
-* Migraciones estructurales.
-* SQL Server 2022 como motor de base de datos.
-* Docker para entorno reproducible.
-* JWT personalizado para autenticación.
-* Autorización basada en políticas por rol.
-* Middleware global para manejo de excepciones.
-* Swagger configurado para pruebas de endpoints.
-* Módulo de pedidos con historial y trazabilidad.
-* Preparado para testing con xUnit, Moq y WebApplicationFactory.
-
----
-
-## Flujo general del sistema
-
-```txt
-Usuario inicia sesión
-        ↓
-Se genera token JWT
-        ↓
-Se valida acceso según rol
-        ↓
-El operador consulta asignaciones activas
-        ↓
-Se valida día o ventana permitida
-        ↓
-Se crea un pedido
-        ↓
-Se agregan productos al pedido
-        ↓
-Se registra historial de cambios
-        ↓
-El pedido puede modificarse, cerrarse o cancelarse
-        ↓
-Se conserva trazabilidad operativa
-```
-
----
-
-## Base de datos
-
-El proyecto utiliza **SQL Server 2022** y **Entity Framework Core**.
-
-Características implementadas:
-
-* DbContext centralizado.
-* Configuración individual por entidad.
-* Migraciones estructurales.
-* Relaciones explícitas.
-* Índices estratégicos.
-* Precisión decimal controlada.
-* Conversión de enums.
-* Eliminación en cascada donde corresponde.
-
----
+El estado operativo de una entrega debe tener una única fuente de verdad en el módulo de paradas de entrega.
 
 ## Seguridad
 
-La seguridad se implementa mediante **JWT** y políticas de autorización por rol.
+La API utiliza JWT Bearer y autorización por roles. La clave de firma y la cadena de conexión se suministran mediante configuración externa; no deben almacenarse en el repositorio.
 
-### Autenticación
+Para el entorno local se recomienda .NET User Secrets. Consulta la [guía de seguridad](docs/SEGURIDAD.md).
 
-* Generación de token JWT.
-* Expiración configurable.
-* Claims personalizados.
-* Validación de credenciales.
-* Protección de endpoints privados.
+Medidas que deben verificarse antes de cualquier despliegue:
 
-### Autorización
+- Rotación de credenciales que hayan estado expuestas.
+- Revisión del historial Git, no solo de los archivos actuales.
+- Validación de identidad y propiedad del recurso en endpoints por identificador.
+- CORS restringido a los orígenes reales del frontend.
+- Limitación de intentos de autenticación.
+- Respuestas de error que no expongan excepciones internas.
+- Configuración de secretos y permisos mínimos en cada entorno.
 
-* Acceso basado en roles.
-* Políticas centralizadas.
-* Uso de atributos de autorización en controladores.
+## Requisitos
 
-Ejemplo:
+- .NET SDK 10.
+- SQL Server accesible desde el equipo.
+- Git.
+- Visual Studio 2022 compatible con .NET 10 o Visual Studio Code con C# Dev Kit.
 
-```csharp
-[Authorize(Policy = "Administrador")]
-```
+No se incluye actualmente una definición Docker Compose verificada. Por ello, la base de datos debe proporcionarse por separado.
 
----
-
-## Docker
-
-El proyecto está preparado para trabajar con SQL Server en contenedor mediante Docker.
-
-Beneficios:
-
-* Entorno reproducible.
-* Onboarding rápido.
-* Aislamiento de dependencias.
-* Persistencia mediante volúmenes.
-* Configuración local más limpia.
-
-Comando sugerido:
-
-```bash
-docker compose up -d
-```
-
----
-
-## Requisitos previos
-
-Antes de ejecutar el proyecto, asegúrate de tener instalado:
-
-* .NET SDK 10
-* Docker Desktop
-* SQL Server Management Studio, opcional
-* Visual Studio 2022 o VS Code
-* Git
-* Postman, opcional
-
----
-
-## Instalación y ejecución
+## Configuración local
 
 ### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/yafAram/Operaciones-G3.git
-```
-
-### 2. Entrar al proyecto
-
-```bash
 cd Operaciones-G3/API.G3Operaciones.Garcias.MX
 ```
 
-### 3. Restaurar dependencias
+### 2. Restaurar dependencias
 
 ```bash
 dotnet restore
 ```
 
-### 4. Levantar base de datos con Docker
+### 3. Configurar secretos locales
 
-```bash
-docker compose up -d
+El proyecto tiene un identificador de User Secrets. Configura la cadena de conexión y una clave JWT nueva, aleatoria y de al menos 32 bytes:
+
+```powershell
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Database=G3OperacionesDb;User Id=TU_USUARIO;Password=TU_PASSWORD;TrustServerCertificate=True;"
+dotnet user-secrets set "JwtSettings:Secret" "REEMPLAZA_POR_UN_SECRETO_ALEATORIO_DE_AL_MENOS_32_BYTES"
 ```
 
-> Si el archivo `docker-compose.yml` está en otra carpeta, ejecuta el comando desde la ubicación correspondiente.
+No compartas ni publiques los valores reales. La clave JWT no debe ser la que haya aparecido previamente en el historial del repositorio.
 
-### 5. Configurar cadena de conexión
+### 4. Ejecutar migraciones
 
-Configura tu `appsettings.Development.json` o variables de entorno.
-
-Ejemplo:
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost,1433;Database=G3OperacionesDb;User Id=sa;Password=TuPasswordSeguro123;TrustServerCertificate=True;"
-  }
-}
-```
-
-> No subas credenciales reales al repositorio.
-
-### 6. Aplicar migraciones
+Con SQL Server disponible y la configuración correcta:
 
 ```bash
 dotnet ef database update
 ```
 
-### 7. Ejecutar la API
+Si la herramienta EF Core no está instalada:
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+### 5. Ejecutar la API
 
 ```bash
 dotnet run
 ```
 
-### 8. Abrir Swagger
+Swagger está habilitado únicamente en el entorno Development. Consulta la URL HTTPS que muestre la consola y agrega `/swagger`.
 
-```txt
-https://localhost:PUERTO/swagger
+## Base de datos y migraciones
+
+El contexto principal es `Infrastructure/Persistence/ApplicationDbContext.cs`. Las migraciones se encuentran en `Migrations/`.
+
+Para crear una migración después de modificar el modelo:
+
+```bash
+dotnet ef migrations add NombreDescriptivo
+dotnet ef database update
 ```
 
----
+Revisa el SQL generado y la compatibilidad de los cambios antes de aplicar migraciones en una base con información.
 
-## Endpoints principales
+## Ejecución y exploración de la API
 
-> Los endpoints exactos pueden variar según los controladores implementados.
+Los controladores definen las rutas y permisos efectivos. Entre los recursos principales se encuentran:
 
-### Autenticación y usuarios
+- `/api/auth` — autenticación.
+- `/api/users` y `/api/roles` — usuarios y roles.
+- `/api/clients` y `/api/chains` — clientes y cadenas.
+- `/api/products` — productos.
+- `/api/warehouses` — almacenes e inventario.
+- `/api/orders` — pedidos y asignaciones de operadores.
+- `/api/delivery/operator` — operaciones de repartidor.
 
-```http
-POST /api/auth/login
-POST /api/users
-GET  /api/users
-GET  /api/users/{id}
-PUT  /api/users/{id}
-```
+Consulta Swagger para conocer verbos, parámetros, DTOs y respuestas reales de cada endpoint. No se publica una tabla de ejemplos ficticios ni se garantiza que rutas genéricas de otros módulos estén implementadas.
 
-### Clientes
+## Calidad y CI
 
-```http
-GET  /api/clients
-POST /api/clients
-GET  /api/clients/{id}
-PUT  /api/clients/{id}
-```
+La configuración de GitHub Actions se encuentra en `.github/workflows/`. Los flujos deben restaurar dependencias, compilar y ejecutar las pruebas disponibles. Un build exitoso no equivale a una suite de pruebas funcionales.
 
-### Productos
-
-```http
-GET  /api/products
-POST /api/products
-GET  /api/products/{id}
-PUT  /api/products/{id}
-```
-
-### Inventario
-
-```http
-GET  /api/warehouses
-POST /api/warehouses
-GET  /api/inventory
-POST /api/inventory-movements
-```
-
-### Pedidos
-
-```http
-GET  /api/orders
-POST /api/orders
-GET  /api/orders/{id}
-PUT  /api/orders/{id}
-POST /api/orders/{id}/items
-POST /api/orders/{id}/cancel
-```
-
----
-
-## Testing
-
-El proyecto está preparado para incorporar pruebas con:
-
-* xUnit.
-* Moq.
-* WebApplicationFactory.
-* Pruebas de reglas de negocio.
-* Pruebas de seguridad.
-* Pruebas de validaciones.
-* Pruebas de casos críticos del dominio.
-
-Comando sugerido cuando exista el proyecto de pruebas:
+Cuando se agregue o amplíe la suite:
 
 ```bash
 dotnet test
 ```
 
----
+Las pruebas críticas recomendadas cubren autorización por rol y propiedad, jerarquía de precios, stock insuficiente, cancelación y edición de pedidos, transacciones, concurrencia y ciclo de vida de entregas.
 
-## Estado del proyecto
+## Documentación adicional
 
-Estado actual: **MVP backend en desarrollo avanzado**.
+- [Arquitectura y decisiones técnicas](docs/ARQUITECTURA.md)
+- [Reglas de negocio y flujos](docs/REGLAS-DE-NEGOCIO.md)
+- [Seguridad y gestión de secretos](docs/SEGURIDAD.md)
+- [Guía de contribución](CONTRIBUTING.md)
 
-El proyecto cuenta con:
+## Limitaciones conocidas y próximos pasos
 
-* Núcleo estructurado.
-* Separación por capas.
-* Base de datos configurada.
-* Migraciones.
-* Seguridad con JWT.
-* Políticas por rol.
-* Swagger.
-* Módulos principales del dominio.
-* Módulo Orders con trazabilidad operativa.
-
----
-
-## Próximas mejoras
-
-* Agregar proyecto de pruebas automatizadas.
-* Documentar endpoints con ejemplos de request/response.
-* Agregar seeders para datos iniciales.
-* Implementar logging estructurado.
-* Agregar manejo avanzado de auditoría.
-* Preparar despliegue en entorno cloud.
-* Crear dashboard frontend.
-* Integrar generación de PDF para pedidos.
-* Optimizar consultas críticas.
-* Agregar paginación, filtros y ordenamiento en endpoints principales.
-
----
-
-## Buenas prácticas aplicadas
-
-* Separación por capas.
-* Dominio independiente.
-* DTOs para entrada y salida de datos.
-* Configuración Fluent API.
-* Middleware global de errores.
-* Autenticación con JWT.
-* Autorización por roles.
-* Uso de migraciones.
-* Documentación con Swagger.
-* Configuración reproducible con Docker.
-
----
-
-## Notas para revisión técnica
-
-Este proyecto demuestra práctica en:
-
-* Desarrollo backend con ASP.NET Core.
-* Diseño de APIs REST.
-* Modelado de dominio.
-* Entity Framework Core.
-* SQL Server.
-* Seguridad con JWT.
-* Autorización basada en roles.
-* Clean Architecture.
-* Docker.
-* Documentación técnica.
-
----
+1. Rotar las credenciales expuestas y revisar el historial Git completo.
+2. Completar pruebas unitarias y de integración con SQL Server.
+3. Corregir autorización por propiedad de recursos en pedidos y entregas.
+4. Garantizar atomicidad y concurrencia de movimientos de inventario.
+5. Separar contratos de persistencia para reducir dependencias entre Application e Infrastructure.
+6. Añadir Docker Compose reproducible, health checks y despliegue solo después de probarlos.
+7. Documentar contratos HTTP con ejemplos generados o verificados desde los DTOs reales.
+8. Añadir observabilidad, rate limiting y políticas CORS por entorno.
 
 ## Autor
 
-**Yafte Aram Mercado Meza**
-Junior Backend Developer
+**Yafte Aram Mercado Meza** — Desarrollo Backend
 
-* GitHub: [github.com/yafAram](https://github.com/yafAram)
-* Email: [yaftearam34@gmail.com](mailto:yaftearam34@gmail.com)
-
+- GitHub: [@yafAram](https://github.com/yafAram)
 
 ---
 
-## Licencia
-
-Este proyecto fue desarrollado como MVP académico/profesional para fines de aprendizaje, práctica técnica y demostración de habilidades backend.
-
----
-
-<div align="center">
-
-### Base sólida primero. Escalabilidad después. Control del dominio siempre.
-
-</div>
+Este repositorio es una muestra de desarrollo backend y modelado de procesos operativos. La información comercial, los datos de clientes y las credenciales reales deben permanecer fuera del repositorio público.
