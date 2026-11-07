@@ -21,6 +21,6 @@ namespace API.G3Operaciones.Garcias.MX.Application.Delivery.DTOs
         public Guid? TargetId { get; set; }
         public decimal OrderTotal { get; set; }
         public int ItemsCount { get; set; }
-        public List<OrderItemSimpleDto> Items { get; set; }
+        public List<OrderItemSimpleDto> Items { get; set; } = new();
     }
 }
