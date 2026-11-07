@@ -48,8 +48,14 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
         [Authorize(Roles = "Administrador,Operador")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "User";
-            var result = await _orderService.CreateOrderAsync(dto, userId);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userId, out var authenticatedUserId))
+                return Unauthorized();
+
+            if (User.IsInRole("Operador") && dto.OperatorId != authenticatedUserId)
+                return Forbid();
+
+            var result = await _orderService.CreateOrderAsync(dto, authenticatedUserId.ToString());
             return Ok(result);
         }
 
@@ -112,6 +118,13 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
         [Authorize(Roles = "Administrador,Operador")]
         public async Task<IActionResult> GetOperatorDashboard(Guid operatorId, [FromQuery] DateTime date)
         {
+            if (User.IsInRole("Operador") &&
+                (!Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var authenticatedUserId) ||
+                 operatorId != authenticatedUserId))
+            {
+                return Forbid();
+            }
+
             var result = await _orderService.GetOperatorDashboardAsync(operatorId, date);
             return Ok(result);
         }
