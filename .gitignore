@@ -1,5 +1,52 @@
+# .NET build output
+**/bin/
+**/obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+artifacts/
+
 # Visual Studio
 .vs/
 *.user
 *.suo
-*.slnx
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# IDEs
+.vscode/
+.idea/
+*.swn
+*.swo
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+**/appsettings.Local.json
+**/appsettings.*.Local.json
+**/secrets.json
+**/secrets.*.json
+
+# Logs and diagnostics
+*.log
+logs/
+*.dmp
+
+# Test and coverage output
+TestResults/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
