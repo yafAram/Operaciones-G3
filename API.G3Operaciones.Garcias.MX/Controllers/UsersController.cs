@@ -32,7 +32,11 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
             if (!result.Success)
                 return BadRequest(new { error = result.Error });
 
-            return Ok(new { message = "Usuario creado correctamente" });
+            return Ok(new
+            {
+                message = "Usuario creado correctamente. Debe cambiar la contraseña en su primer inicio de sesión.",
+                temporaryPassword = result.TemporaryPassword
+            });
         }
 
         // Listar usuarios
