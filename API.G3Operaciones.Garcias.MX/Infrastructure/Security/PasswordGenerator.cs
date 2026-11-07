@@ -1,15 +1,24 @@
-﻿using API.G3Operaciones.Garcias.MX.Application.Common.Security;
+using API.G3Operaciones.Garcias.MX.Application.Common.Security;
+using System.Security.Cryptography;
 
-namespace API.G3Operaciones.Garcias.MX.Infrastructure.Security
+namespace API.G3Operaciones.Garcias.MX.Infrastructure.Security;
+
+public sealed class PasswordGenerator : IPasswordGenerator
 {
-    public class PasswordGenerator : IPasswordGenerator
+    private const string Characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+
+    public string Generate(int length = 16)
     {
-        public string Generate(int length = 10)
+        if (length < 12 || length > 256)
+            throw new ArgumentOutOfRangeException(nameof(length), "La longitud debe estar entre 12 y 256 caracteres.");
+
+        return string.Create(length, Characters, static (buffer, characters) =>
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
-            var random = new Random();
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+            for (var index = 0; index < buffer.Length; index++)
+            {
+                buffer[index] = characters[RandomNumberGenerator.GetInt32(characters.Length)];
+            }
+        });
     }
 }
