@@ -78,7 +78,7 @@ builder.Services.AddAutoMapper(cfg =>
 //LOGS
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Logging.SetMinimumLevel(LogLevel.Debug);
+builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 
 
@@ -95,36 +95,7 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
-    {
-        // Log completo de ModelState
-        foreach (var entry in context.ModelState)
-        {
-            var key = entry.Key;
-            var errors = entry.Value.Errors.Select(e => e.ErrorMessage);
-            Console.WriteLine($"Campo: {key} - Errores: {string.Join(", ", errors)}");
-        }
-
-        // También loguear excepciones internas si hubiera
-        if (context.ModelState.ErrorCount > 0)
-        {
-            foreach (var value in context.ModelState.Values)
-            {
-                foreach (var error in value.Errors)
-                {
-                    if (error.Exception != null)
-                    {
-                        Console.WriteLine($"Excepción: {error.Exception}");
-                    }
-                }
-            }
-        }
-
-        return new BadRequestObjectResult(new
-        {
-            error = "Datos de inicio de sesión inválidos",
-            modelStateErrors = context.ModelState
-        });
-    };
+        new BadRequestObjectResult(new ValidationProblemDetails(context.ModelState));
 });
 
 
@@ -142,6 +113,25 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 
 
+
+// Fail fast when required deployment configuration is missing.
+var jwtSecret = builder.Configuration["JwtSettings:Secret"];
+if (string.IsNullOrWhiteSpace(jwtSecret) || Encoding.UTF8.GetByteCount(jwtSecret) < 32)
+{
+    throw new InvalidOperationException(
+        "JwtSettings:Secret must be configured with a secret of at least 32 bytes.");
+}
+
+if (string.IsNullOrWhiteSpace(builder.Configuration["JwtSettings:Issuer"]) ||
+    string.IsNullOrWhiteSpace(builder.Configuration["JwtSettings:Audience"]))
+{
+    throw new InvalidOperationException("JWT issuer and audience must be configured.");
+}
+
+if (string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("DefaultConnection")))
+{
+    throw new InvalidOperationException("ConnectionStrings:DefaultConnection must be configured.");
+}
 
 // Authentication
 builder.Services.AddAuthentication("Bearer")
@@ -203,16 +193,14 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
-
     // Aplica migraciones pendientes
     if (dbContext.Database.GetPendingMigrations().Any())
     {
         dbContext.Database.Migrate();
     }
 
-    // Crea usuario admin por defecto si no existe
-    await DataSeeder.SeedAsync(dbContext, passwordHasher);
+    // Inicializa únicamente roles de referencia; no crea cuentas ni credenciales.
+    await DataSeeder.SeedAsync(dbContext);
 }
 
 // =====================================================
