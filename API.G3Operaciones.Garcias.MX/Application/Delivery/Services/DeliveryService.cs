@@ -715,6 +715,9 @@ namespace API.G3Operaciones.Garcias.MX.Application.Delivery.Services
                 .FirstOrDefaultAsync(x => x.Id == dto.DeliveryStopId)
                 ?? throw new Exception("Stop no encontrado");
 
+            if (string.IsNullOrWhiteSpace(dto.Notes))
+                throw new InvalidOperationException("Debes indicar el motivo de la incidencia.");
+
             stop.MarkAsFailed(dto.Notes);
 
             await _context.SaveChangesAsync();
