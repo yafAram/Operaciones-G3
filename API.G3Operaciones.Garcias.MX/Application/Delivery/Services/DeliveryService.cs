@@ -141,14 +141,17 @@ namespace API.G3Operaciones.Garcias.MX.Application.Delivery.Services
             if (!Guid.TryParse(deliveryUserId, out var userId))
                 throw new UnauthorizedAccessException("Token inválido.");
 
+            var isAdmin = _httpContextAccessor.HttpContext?.User?.IsInRole("Administrador") == true;
+
             if (dto.ChainId == null && dto.ClientId == null)
                 throw new InvalidOperationException("Debe enviar ChainId o ClientId.");
 
             var plan = await _context.DeliveryAssignmentPlans
                 .Include(x => x.Targets)
                 .FirstOrDefaultAsync(x =>
-                    (planId != null && x.Id == planId) ||
-                    (planId == null &&
+                    (planId != null && x.Id == planId &&
+                     (isAdmin || x.DeliveryUserId == userId)) ||
+                    (planId == null && !isAdmin &&
                      x.DeliveryUserId == userId &&
                      x.DeliveryDate.Date == DateTime.UtcNow.Date));
 
@@ -159,14 +162,8 @@ namespace API.G3Operaciones.Garcias.MX.Application.Delivery.Services
                 await _context.SaveChangesAsync();
             }
 
-            // 🔥 IMPORTANTE: ya NO bloqueamos add target si el plan está locked
-            // solo se bloquea si quieres reglas más estrictas de negocio
-            // (ejemplo: solo lectura total)
             if (plan.IsLocked)
-            {
-                // opcional: permitir solo agregar targets
-                // si en tu negocio NO debe permitir nada, aquí sí se lanza excepción
-            }
+                throw new InvalidOperationException("No se pueden modificar asignaciones de un plan confirmado.");
 
             var exists = await _context.DeliveryAssignmentTargets.AnyAsync(t =>
                 t.DeliveryAssignmentPlanId == plan.Id &&
@@ -202,8 +199,23 @@ namespace API.G3Operaciones.Garcias.MX.Application.Delivery.Services
         public async Task RemoveTargetAsync(Guid targetId)
         {
             var target = await _context.DeliveryAssignmentTargets
+                .Include(x => x.DeliveryAssignmentPlan)
                 .FirstOrDefaultAsync(x => x.Id == targetId)
                 ?? throw new Exception("Target no encontrado");
+
+            var currentUser = _httpContextAccessor.HttpContext?.User;
+            var isAdmin = currentUser?.IsInRole("Administrador") == true;
+            var currentUserId = currentUser?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (!isAdmin &&
+                (!Guid.TryParse(currentUserId, out var userId) ||
+                 target.DeliveryAssignmentPlan.DeliveryUserId != userId))
+            {
+                throw new UnauthorizedAccessException("No tienes permiso para modificar este plan.");
+            }
+
+            if (target.DeliveryAssignmentPlan.IsLocked)
+                throw new InvalidOperationException("No se pueden modificar asignaciones de un plan confirmado.");
 
             target.Deactivate();
             await _context.SaveChangesAsync();
@@ -757,16 +769,23 @@ namespace API.G3Operaciones.Garcias.MX.Application.Delivery.Services
 
         public async Task ConfirmPlanAsync(Guid planId)
         {
-            var hasActiveTargets = await _context.DeliveryAssignmentTargets
-                .AnyAsync(t => t.DeliveryAssignmentPlanId == planId && t.IsActive);
-
-            if (!hasActiveTargets)
-                throw new InvalidOperationException("No puedes bloquear un plan sin asignaciones.");
-
             var plan = await _context.DeliveryAssignmentPlans
                 .Include(x => x.Targets)
                 .FirstOrDefaultAsync(x => x.Id == planId)
                 ?? throw new Exception("Plan no encontrado");
+
+            var currentUser = _httpContextAccessor.HttpContext?.User;
+            var isAdmin = currentUser?.IsInRole("Administrador") == true;
+            var currentUserId = currentUser?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (!isAdmin &&
+                (!Guid.TryParse(currentUserId, out var userId) || plan.DeliveryUserId != userId))
+            {
+                throw new UnauthorizedAccessException("No tienes permiso para confirmar este plan.");
+            }
+
+            if (!plan.Targets.Any(target => target.IsActive))
+                throw new InvalidOperationException("No puedes bloquear un plan sin asignaciones.");
 
             plan.Lock();
             await _context.SaveChangesAsync();
