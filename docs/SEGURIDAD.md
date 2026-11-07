@@ -42,6 +42,22 @@ dotnet user-secrets set "JwtSettings:Secret" "<clave-aleatoria-de-al-menos-32-by
 
 No compartas la salida de `dotnet user-secrets list`, ya que muestra los valores almacenados.
 
+## Alta inicial del administrador
+
+El seeder crea roles, pero no incluye credenciales predeterminadas. En una base de datos nueva, puede crearse el primer administrador mediante configuración temporal:
+
+```powershell
+dotnet user-secrets set "BootstrapAdmin:Enabled" "true"
+dotnet user-secrets set "BootstrapAdmin:Username" "<usuario>"
+dotnet user-secrets set "BootstrapAdmin:Password" "<secreto-aleatorio-de-16-o-mas-caracteres>"
+dotnet user-secrets set "BootstrapAdmin:FirstName" "<nombre>"
+dotnet user-secrets set "BootstrapAdmin:LastName" "<apellido>"
+dotnet user-secrets set "BootstrapAdmin:BirthDate" "yyyy-MM-dd"
+```
+
+La cuenta solo se crea si no hay usuarios registrados y su credencial exige cambiar la contraseña en el primer inicio de sesión. Después de confirmar el alta, desactiva `BootstrapAdmin:Enabled` y elimina el secreto de contraseña. No reutilices contraseñas que hayan sido expuestas.
+
+
 ## Controles de autenticación y autorización
 
 Antes de publicar una versión:
