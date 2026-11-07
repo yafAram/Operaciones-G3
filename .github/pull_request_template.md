@@ -1,39 +1,39 @@
-## Summary
+## Resumen
 
-Describe the problem and the change.
+Describe el problema y el comportamiento esperado.
 
-## Scope
+## Alcance
 
-- [ ] Backend/API
-- [ ] Database/migrations
-- [ ] Security
-- [ ] Documentation
+- [ ] API / Backend
+- [ ] Base de datos / Migraciones
+- [ ] Seguridad
+- [ ] Documentación
 - [ ] CI/CD
-- [ ] Tests
+- [ ] Pruebas
 
-## Validation
+## Validación
 
-List the exact commands executed and their results.
+Indica los comandos ejecutados y sus resultados reales.
 
 - [ ] `dotnet restore`
-- [ ] `dotnet build --no-restore`
+- [ ] `dotnet build --configuration Release`
 - [ ] `dotnet test`
-- [ ] Manual/API verification (describe below)
+- [ ] Verificación manual/API (detallar abajo)
 
-## Data and configuration
+## Datos y configuración
 
-- [ ] No secrets or personal data added.
-- [ ] Configuration changes documented.
-- [ ] Database migration impact documented.
-- [ ] Rollback considerations documented.
+- [ ] No se agregaron secretos ni datos personales.
+- [ ] Se documentaron los cambios de configuración.
+- [ ] Se documentó el impacto en migraciones.
+- [ ] Se documentó la reversión cuando aplica.
 
-## Security review
+## Revisión de seguridad
 
-Describe authorization, validation, logging, and sensitive-data implications. Write "Not applicable" only when justified.
+Describe el impacto en autenticación, autorización, validación, registros y datos sensibles. Indica "No aplica" solo cuando esté justificado.
 
-## Checklist
+## Lista de comprobación
 
-- [ ] The change is focused and documented.
-- [ ] No generated `bin/` or `obj/` files are included.
-- [ ] No unrelated UI or business behavior was changed.
-- [ ] README and API documentation remain accurate.
+- [ ] El cambio tiene alcance acotado y documentación.
+- [ ] No incluye carpetas `bin/` ni `obj/`.
+- [ ] No altera componentes o reglas ajenas al objetivo.
+- [ ] README y contratos de API siguen siendo correctos.
