@@ -161,7 +161,27 @@ dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;
 dotnet user-secrets set "JwtSettings:Secret" "REEMPLAZA_POR_UN_SECRETO_ALEATORIO_DE_AL_MENOS_32_BYTES"
 ```
 
-No compartas ni publiques los valores reales. La clave JWT no debe ser la que haya aparecido previamente en el historial del repositorio.
+#### Primer administrador (solo para una base de datos sin usuarios)
+
+El seeder ya no crea cuentas predeterminadas. Para una instalación nueva, configura temporalmente los siguientes valores con datos propios y una contraseña aleatoria de al menos 16 caracteres:
+
+```powershell
+dotnet user-secrets set "BootstrapAdmin:Enabled" "true"
+dotnet user-secrets set "BootstrapAdmin:Username" "TU_USUARIO_ADMIN"
+dotnet user-secrets set "BootstrapAdmin:Password" "TU_PASSWORD_TEMPORAL_ALEATORIO"
+dotnet user-secrets set "BootstrapAdmin:FirstName" "NOMBRE"
+dotnet user-secrets set "BootstrapAdmin:LastName" "APELLIDO"
+dotnet user-secrets set "BootstrapAdmin:BirthDate" "1990-01-01"
+```
+
+El administrador se crea únicamente cuando la base de datos no tiene usuarios. La credencial queda marcada para cambio de contraseña en el primer inicio de sesión. Después de confirmar que la cuenta fue creada, desactiva y elimina los secretos de bootstrap:
+
+```powershell
+dotnet user-secrets set "BootstrapAdmin:Enabled" "false"
+dotnet user-secrets remove "BootstrapAdmin:Password"
+```
+
+No compartas ni publiques los valores reales. La clave JWT y la contraseña de bootstrap deben ser nuevas; nunca reutilices valores que hayan estado en el historial del repositorio.
 
 ### 4. Ejecutar migraciones
 
