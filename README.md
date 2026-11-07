@@ -228,6 +228,7 @@ Las pruebas críticas recomendadas cubren autorización por rol y propiedad, jer
 
 - [Arquitectura y decisiones técnicas](docs/ARQUITECTURA.md)
 - [Reglas de negocio y flujos](docs/REGLAS-DE-NEGOCIO.md)
+- [Plan de pruebas](docs/PLAN-DE-PRUEBAS.md)
 - [Seguridad y gestión de secretos](docs/SEGURIDAD.md)
 - [Guía de contribución](CONTRIBUTING.md)
 
