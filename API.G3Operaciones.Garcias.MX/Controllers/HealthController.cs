@@ -14,6 +14,20 @@ namespace API.G3Operaciones.Garcias.MX.Controllers
             _dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Liveness endpoint for process/container health probes.
+        /// Does not query the database or expose infrastructure details.
+        /// </summary>
+        [HttpGet("live")]
+        public IActionResult CheckLiveness()
+        {
+            return Ok(new
+            {
+                status = "Healthy",
+                timestamp = DateTimeOffset.UtcNow
+            });
+        }
+
         [HttpGet("db")]
         public async Task<IActionResult> CheckDatabase()
         {
