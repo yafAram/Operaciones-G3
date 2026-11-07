@@ -1,45 +1,37 @@
-﻿using API.G3Operaciones.Garcias.MX.Application.Common.Security;
-using API.G3Operaciones.Garcias.MX.Application.Users.Interfaces;
 using API.G3Operaciones.Garcias.MX.Domain.Entities;
-using API.G3Operaciones.Garcias.MX.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence
+namespace API.G3Operaciones.Garcias.MX.Infrastructure.Persistence;
+
+/// <summary>
+/// Seeds only non-sensitive reference data. Administrative accounts must be
+/// provisioned through a controlled process and never through source-code defaults.
+/// </summary>
+public static class DataSeeder
 {
-    public static class DataSeeder
+    private static readonly string[] RequiredRoles =
+    [
+        "Administrador",
+        "Operador",
+        "Repartidor"
+    ];
+
+    public static async Task SeedAsync(ApplicationDbContext context, CancellationToken cancellationToken = default)
     {
-        public static async Task SeedAsync(ApplicationDbContext context, IPasswordHasher passwordHasher)
+        foreach (var roleName in RequiredRoles)
         {
-            // Verifica si ya existen usuarios
-            if (await context.Users.AnyAsync())
-                return;
+            var exists = await context.Roles
+                .AnyAsync(role => role.Name == roleName, cancellationToken);
 
-            // Crear rol administrador
-            var adminRole = new Role
+            if (!exists)
             {
-                Name = "Administrador",
-            };
-            context.Roles.Add(adminRole);
+                context.Roles.Add(new Role(roleName));
+            }
+        }
 
-            // Crear usuario administrador
-            var adminUser = new User(
-                firstName: "Admin",
-                lastName: "Default",
-                birthDate: DateTime.MinValue, // Ajusta según sea necesario
-                phoneNumber: "", // Ajusta según sea necesario
-                roleId: adminRole.Id
-            );
-            context.Users.Add(adminUser);
-
-            // Crear credencial para login
-            var adminCredential = new UserCredential(
-                userId: adminUser.Id,
-                username: "admin",
-                passwordHash: passwordHasher.Hash("Admin123!") // contraseña inicial
-            );
-            context.Set<UserCredential>().Add(adminCredential);
-
-            await context.SaveChangesAsync();
+        if (context.ChangeTracker.HasChanges())
+        {
+            await context.SaveChangesAsync(cancellationToken);
         }
     }
 }
